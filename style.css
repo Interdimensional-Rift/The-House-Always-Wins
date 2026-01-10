@@ -1,28 +1,3 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-
-  background:
-    /* Viñeta suave solo en los bordes */
-    radial-gradient(
-      circle at center,
-      rgba(0,0,0,0) 70%,  /* centro transparente */
-      rgba(0,0,0,0.8) 75% /* bordes oscuros */
-    ),
-    linear-gradient(
-      rgba(0,0,0,0.2),
-      rgba(0,0,0,0.5)
-    ),
-    url("imagenes/casino-bg.png");
-
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 
 
 /* Viñeteado oscuro */
@@ -51,6 +26,7 @@ body::before {
   z-index: 2;
 }
 
+
 /* Cartas */
 .card {
   position: absolute;
@@ -63,3 +39,132 @@ body::before {
   filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6));
   will-change: transform, top;
 }
+
+body {
+    margin: 0;
+    background: #0a0a0a;
+    color: #fff;
+    font-family: 'Merriweather', serif;
+     }
+
+     #game-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Para que no interfiera con clicks */
+            z-index: 1;
+        }
+
+        /* Intro Parallax */
+        .intro-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 20px;
+            background: rgba(0,0,0,0.8);
+            z-index: 2;
+            position: relative;
+        }
+
+        .intro-box {
+            max-width: 800px;
+            padding: 30px;
+            border: 2px solid #ff9f1c;
+            border-radius: 15px;
+            background: rgba(10,10,10,0.9);
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .intro-box p {
+            margin-bottom: 20px;
+        }
+
+        #play-music {
+            padding: 10px 20px;
+            background: #ff9f1c;
+            border: none;
+            border-radius: 10px;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #play-music:hover {
+            background: #ffb84d;
+        }
+
+        /* Capítulo Secreto */
+        .secret-section {
+            padding: 50px 20px;
+            max-width: 1000px;
+            margin: auto;
+            line-height: 1.8;
+            position: relative;
+            z-index: 2;
+        }
+
+        .secret-section h2 {
+            text-align: center;
+            color: #ff9f1c;
+            text-shadow: 0 0 10px #ff9f1c;
+            margin-bottom: 30px;
+        }
+
+        .secret-section p {
+            margin-bottom: 20px;
+            color: rgb(189, 189, 189);
+            background-color: #0000002f;
+        }
+
+        /* Botones de música principal */
+        .music-controls {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 3;
+        }
+
+        .music-controls button {
+            margin-left: 5px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            background: #ff9f1c;
+            color: #000;
+        }
+
+        .music-controls button:hover {
+            background: #ffb84d;
+        }
+
+       html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* solo bloquear scroll horizontal */
+  overflow-y: auto;   /* permitir scroll vertical */
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(0,0,0,0) 70%,
+      rgba(0,0,0,0.8) 75%
+    ),
+    linear-gradient(
+      rgba(0,0,0,0.2),
+      rgba(0,0,0,0.5)
+    ),
+    url("imagenes/casino-bg.png");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+

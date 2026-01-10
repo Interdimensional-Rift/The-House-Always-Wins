@@ -2,6 +2,9 @@ const container = document.getElementById('game-container');
 
 const maxCards = 150; // límite de cartas en pantalla
 
+const chips = [];
+const maxChips = 200; // puedes poner el límite que quieras
+
 // Lista de cartas (todas en PNG)
 const cards = [
   'imagenes/Jocker_Cards/JockerCard.png',
@@ -122,11 +125,63 @@ function createCard() {
 // Crear cartas continuamente
 setInterval(createCard, 150);
 
-// Limpiar todas las cartas cada 3 minutos
+//---------------------------------------------------------------------------------------------------------------------------------
+//Ahora las fichas
+//---------------------------------------------------------------------------------------------------------------------------------
+
+const chipImages = [
+    "imagenes/chips/chip1.png",
+    "imagenes/chips/chip2.png",
+    "imagenes/chips/chip3.png",
+    "imagenes/chips/chip4.png",
+];
+
+function createChip() {
+    if (chips.length >= maxChips) return;
+
+    const chip = document.createElement('div');
+    chip.className = 'card'; // reutilizamos la clase card, se ve bien
+    const size = Math.random() * 15 + 15; // 15px a 30px
+    chip.style.width = `${size}px`;
+    chip.style.height = `${size}px`;
+
+    const img = chipImages[Math.floor(Math.random() * chipImages.length)];
+    chip.style.backgroundImage = `url(${img})`;
+
+    chip.style.left = `${Math.random() * window.innerWidth}px`;
+    chip.speed = 2 + Math.random() * 3; // caen más rápido que cartas
+    chip.horizontalOffset = 0; // sin movimiento horizontal
+
+    container.appendChild(chip);
+    chips.push(chip);
+}
+
+function animateFalling(elements) {
+    for (let i = 0; i < elements.length; i++) {
+        const el = elements[i];
+        let top = parseFloat(el.style.top || 0);
+        top += el.speed;
+        let left = parseFloat(el.style.left || 0);
+        left += el.horizontalOffset; // fichas tienen horizontalOffset=0
+
+        el.style.top = top + 'px';
+        el.style.left = left + 'px';
+
+        // Si sale de la pantalla, reiniciarla arriba
+        if (top > window.innerHeight) {
+            el.style.top = '-60px';
+            el.style.left = `${Math.random() * window.innerWidth}px`;
+        }
+    }
+    requestAnimationFrame(() => {
+        animateFalling(cards);
+        animateFalling(chips);
+    });
+}
+
 setInterval(() => {
-    const allCards = document.querySelectorAll('.card');
-    allCards.forEach(card => card.remove());
-}, 180000);
+    createChip();
+}, 150); // cada 0.15s
 
 // Música de fondo
 const backgroundMusic = new Audio('musica/taberna.mp3');
@@ -135,3 +190,17 @@ backgroundMusic.volume = 0.5;
 backgroundMusic.play().catch(e => {
     console.log("Autoplay bloqueado:", e);
 });
+
+// Limpiar todas las cartas cada 3 minutos
+/*setInterval(() => {
+    const allCards = document.querySelectorAll('.card');
+    allCards.forEach(card => card.remove());
+}, 180000);*/
+
+// Limpieza periódica de fichas
+/*setInterval(() => {
+    for (let chip of chips) {
+        container.removeChild(chip);
+    }
+    chips.length = 0;
+}, 180000);*/
