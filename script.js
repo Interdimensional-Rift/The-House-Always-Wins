@@ -1,11 +1,21 @@
 const container = document.getElementById('game-container');
 
-const maxCards = 150; // límite de cartas en pantalla
+/* ---------------------------------------
+   CONFIGURACIÓN GENERAL
+--------------------------------------- */
+const maxCards = 150;
+const maxChips = 200;
 
-const chips = [];
-const maxChips = 200; // puedes poner el límite que quieras
+let paused = false;
+document.addEventListener('visibilitychange', () => {
+    paused = document.hidden;
+});
 
-// Lista de cartas (todas en PNG)
+/* ---------------------------------------
+   CARTAS
+--------------------------------------- */
+
+// Lista de cartas
 const cards = [
   'imagenes/Jocker_Cards/JockerCard.png',
   'imagenes/Diamond_Cards/DiamondCard-A.png',
@@ -62,21 +72,15 @@ const cards = [
   'imagenes/Heart_Cards/HeartCard-K.png'
 ];
 
-// Pausa automática cuando la pestaña no está activa
-let paused = false;
-document.addEventListener('visibilitychange', () => {
-    paused = document.hidden;
-});
-
 function createCard() {
     if (paused) return;
-    if (container.children.length >= maxCards) return;
+    if (container.children.length >= maxCards + maxChips) return;
 
     const card = document.createElement('div');
     card.classList.add('card');
 
-    const cardImage = cards[Math.floor(Math.random() * cards.length)];
-    card.style.backgroundImage = `url("${cardImage}")`;
+    const img = cards[Math.floor(Math.random() * cards.length)];
+    card.style.backgroundImage = `url("${img}")`;
 
     const scale = 0.5 + Math.random() * 1.2;
     const width = 60 * scale;
@@ -87,32 +91,36 @@ function createCard() {
 
     let startX = Math.random() * (window.innerWidth - width);
     card.style.left = startX + 'px';
+    card.style.top = '-150px';
     card.style.opacity = 0.5 + Math.random() * 0.5;
 
     container.appendChild(card);
 
     let top = -150;
-    const speed = 1 + (2 - scale); // grande = más lento, pequeño = más rápido
+    const speed = 1 + (2 - scale);
 
     let rotation = Math.random() * 360;
     const rotationSpeed = Math.random() * 3 - 1.5;
 
-    // Movimiento horizontal tipo bamboleo
-    const swayAmplitude = 20 + Math.random() * 15; // px de lado a lado
-    const swayFrequency = 0.01 + Math.random() * 0.02; // velocidad de oscilación
+    const swayAmplitude = 20 + Math.random() * 15;
+    const swayFrequency = 0.01 + Math.random() * 0.02;
     const phase = Math.random() * Math.PI * 2;
 
     function fall() {
+        if (paused) {
+            requestAnimationFrame(fall);
+            return;
+        }
+
         top += speed;
         rotation += rotationSpeed;
-
         const sway = Math.sin(top * swayFrequency + phase) * swayAmplitude;
 
         card.style.top = top + 'px';
         card.style.left = startX + sway + 'px';
         card.style.transform = `rotate(${rotation}deg)`;
 
-        if (top < window.innerHeight + 50) {
+        if (top < window.innerHeight + 100) {
             requestAnimationFrame(fall);
         } else {
             card.remove();
@@ -122,74 +130,75 @@ function createCard() {
     fall();
 }
 
-// Crear cartas continuamente
 setInterval(createCard, 150);
 
-//---------------------------------------------------------------------------------------------------------------------------------
-//Ahora las fichas
-//---------------------------------------------------------------------------------------------------------------------------------
+/* ---------------------------------------
+   FICHAS
+--------------------------------------- */
 
+const chips = [];
 const chipImages = [
-    "imagenes/chips/chip1.png",
-    "imagenes/chips/chip2.png",
-    "imagenes/chips/chip3.png",
-    "imagenes/chips/chip4.png",
+    "imagenes/chips/Chip-Rojo.png",
+    "imagenes/chips/Chip-Azul.png",
+    "imagenes/chips/Chip-Amarillo.png",
+    "imagenes/chips/Chip-Verde.png",
+    "imagenes/chips/Chip-Negro.png",
 ];
 
 function createChip() {
+    if (paused) return;
     if (chips.length >= maxChips) return;
 
     const chip = document.createElement('div');
-    chip.className = 'card'; // reutilizamos la clase card, se ve bien
-    const size = Math.random() * 15 + 15; // 15px a 30px
-    chip.style.width = `${size}px`;
-    chip.style.height = `${size}px`;
+    chip.classList.add('card');
+
+    // Tamaño aleatorio
+    const size = 15 + Math.random() * 30; // 15px a 45px
+    chip.style.width = size + 'px';
+    chip.style.height = size + 'px';
 
     const img = chipImages[Math.floor(Math.random() * chipImages.length)];
-    chip.style.backgroundImage = `url(${img})`;
+    chip.style.backgroundImage = `url("${img}")`;
 
-    chip.style.left = `${Math.random() * window.innerWidth}px`;
-    chip.speed = 2 + Math.random() * 3; // caen más rápido que cartas
-    chip.horizontalOffset = 0; // sin movimiento horizontal
+    chip.style.left = `${Math.random() * (window.innerWidth - size)}px`;
+    chip.style.top = '-80px';
+
+    // Velocidad dependiente del tamaño (grande = más lento)
+    chip.speed = 4 - (size / 15);
+    if (chip.speed < 0.8) chip.speed = 0.8;
+
+    // Rotación propia (rodando)
+    chip.rotation = Math.random() * 360;
+    chip.rotationSpeed = (Math.random() * 4 + 2) * (Math.random() < 0.5 ? -1 : 1);
 
     container.appendChild(chip);
     chips.push(chip);
 }
 
-function animateFalling(elements) {
-    for (let i = 0; i < elements.length; i++) {
-        const el = elements[i];
-        let top = parseFloat(el.style.top || 0);
-        top += el.speed;
-        let left = parseFloat(el.style.left || 0);
-        left += el.horizontalOffset; // fichas tienen horizontalOffset=0
+function animateChips() {
+    if (!paused) {
+        for (let i = chips.length - 1; i >= 0; i--) {
+            const chip = chips[i];
 
-        el.style.top = top + 'px';
-        el.style.left = left + 'px';
+            let top = parseFloat(chip.style.top);
+            top += chip.speed;
 
-        // Si sale de la pantalla, reiniciarla arriba
-        if (top > window.innerHeight) {
-            el.style.top = '-60px';
-            el.style.left = `${Math.random() * window.innerWidth}px`;
+            chip.rotation += chip.rotationSpeed;
+
+            chip.style.top = top + 'px';
+            chip.style.transform = `rotate(${chip.rotation}deg)`;
+
+            if (top > window.innerHeight + 80) {
+                chip.remove();
+                chips.splice(i, 1);
+            }
         }
     }
-    requestAnimationFrame(() => {
-        animateFalling(cards);
-        animateFalling(chips);
-    });
+    requestAnimationFrame(animateChips);
 }
 
-setInterval(() => {
-    createChip();
-}, 150); // cada 0.15s
-
-// Música de fondo
-const backgroundMusic = new Audio('musica/taberna.mp3');
-backgroundMusic.loop = true;
-backgroundMusic.volume = 0.5;
-backgroundMusic.play().catch(e => {
-    console.log("Autoplay bloqueado:", e);
-});
+animateChips();
+setInterval(createChip, 180);
 
 // Limpiar todas las cartas cada 3 minutos
 /*setInterval(() => {

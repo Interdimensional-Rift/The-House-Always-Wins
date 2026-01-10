@@ -80,6 +80,7 @@ body {
 
         .intro-box p {
             margin-bottom: 20px;
+            color: #ffffff;
         }
 
         #play-music {
@@ -108,14 +109,14 @@ body {
 
         .secret-section h2 {
             text-align: center;
-            color: #ff9f1c;
+            color: #c9480d;
             text-shadow: 0 0 10px #ff9f1c;
             margin-bottom: 30px;
         }
 
         .secret-section p {
             margin-bottom: 20px;
-            color: rgb(189, 189, 189);
+            color: rgb(231, 231, 231);
             background-color: #0000002f;
         }
 
@@ -168,3 +169,13 @@ body {
 }
 
 
+.breach-link {
+    color: #ffffff;
+  text-decoration: none; /* Elimina el subrayado por defecto */
+  transition: text-shadow 0.3s ease; /* Suaviza la aparición del brillo */
+}
+
+.breach-link:hover {
+  /* El "brillo": primer 0 (X), segundo 0 (Y), 6px (difuminado), color (naranja) */
+  text-shadow: 0 0 6px rgba(255, 188, 95, 0.7);
+}
