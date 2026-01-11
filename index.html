@@ -1,40 +1,102 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Golden Odds</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino Interdimensional</title>
+    <link rel="stylesheet" href="style.css">
+    
 </head>
 <body>
+    <div id="game-container"></div>
 
-  <!-- TELÓN -->
-  <div id="curtain-container">
-    <div id="curtain-left"></div>
-    <div id="curtain-right"></div>
-    <img
-        id="rope"
-        src="imagenes/Cuerdas/Cuerda-8.png"
-        alt="Cuerda del telón"
-    />
-    <div id="intro-text">
-      El espectáculo aún no ha comenzado
+    <!-- Intro Parallax -->
+    <section id="parallax-intro" class="intro-section">
+        <div class="intro-box">
+            <p>
+                Ah… así que has llegado hasta aquí. Tenía la esperanza de que alguien con suficiente audacia encontrara mi pequeño secreto. Felicidades: las probabilidades estaban en tu contra. Si quieres, puedes visitar mi casino… si tienes agallas.
+            </p>
+            <p>
+                Mientras lees mi historia, te dejo mi banda sonora.  No es música cualquiera: proviene de viajeros de la Brecha
+            conocidos como <a
+            href="https://interdimensional-rift.github.io/The-Golden-Odds-Site/"
+            target="_blank"
+            class="breach-link"
+            ><strong>Golden Odds</strong></a> que aprendieron a traducir el caos en sonido. Esta música es para que te relajes y absorbas cada detalle de lo que viví. Que disfrutes del viaje… y recuerda: en mis dominios, incluso la suerte tiene reglas.
+            </p>
+            <button id="play-music">🎵 Reproducir música</button>
+        </div>
+    </section>
+
+    <!-- Capítulo Secreto -->
+    <section id="capitulo-secreto" class="secret-section">
+        <h2>Capítulo Secreto</h2>
+        <p>En la Tierra, antes de ser arrastrado por la Brecha, donde la magia se consideraba fantasía y las anomalías, simples chistes, existía un distrito rico saturado de casinos. Allí, una brecha diminuta y casi imperceptible se abrió entre las luces y el humo...</p>
+        <p>El gobierno pronto vio su potencial como atracción turística y erigió un casino alrededor de ella, bajo el pretexto de “traer buena suerte”. Lo llamaron <strong>Rift Casino</strong>. Día y noche, estaba abarrotado; la fama del lugar crecía como un rumor imposible de ignorar.</p>
+        <p>Hasta que un día… todo cambió.</p>
+        <p>La brecha, aparentemente inofensiva, empezó a absorber mesas, sillas y mobiliario. Las personas corrían aterrorizadas, pero él no se movió. Era un crupier común, invisible entre la multitud, y sin embargo algo en aquella anomalía lo fascinaba. Observó que no hacía daño a los humanos y, cuando el último cliente desapareció, extendió la mano hacia ella.</p>
+        <p>La descarga fue brutal. La electricidad lo atravesó, y la brecha se cerró de golpe. Al despertar, el mundo había cambiado: ya no veía la realidad, solo estadísticas. Comprendió que existían universos donde la magia y la corrupción eran tangibles, y que su don no era controlar probabilidades… sino <strong>leerlas</strong>.</p>
+        <p>Con ese poder, abrió un nuevo casino: el <strong>Casino Interdimensional</strong>. Las riquezas fluyeron sin esfuerzo, pero pronto todo se volvió monótono. La Tierra ya no le ofrecía nada: necesitaba acción, riesgo, desafío.</p>
+        <p>Viajó, buscó, exploró… hasta encontrar la brecha verdadera. Esta no se escondía; lo esperaba. Sin dudarlo, entró. Cuando la brecha se cerró tras él, regresó a su casino… vacío. Silencio absoluto. ¿Sueño? ¿Realidad? Su mente buscaba respuestas.</p>
+        <p>Salió a tomar aire y la verdad lo golpeó: <strong>ya no estaba en la Tierra</strong>. Ante él se desplegaba un cosmos vivo: planetas, razas, naves, explosiones, alianzas y conflictos que se entrelazaban en un espectáculo sin fin. Era lo que siempre había anhelado.</p>
+        <p>Con determinación, adquirió materiales de una raza diplomática y construyó el verdadero <strong>Casino Interdimensional</strong>. Allí, entre luces, mesas y apuestas infinitas, encontró su hogar.</p>
+        <p>Muchos buscaron su alianza; otros, su caída. Todos fracasaron. Él no necesitaba tocar a nadie: un solo vistazo bastaba. Sus ataques eran exactos, inevitables, un juego de vida y muerte que nadie podía ganar. Comprendieron que no era agresivo, solo <strong>neutral</strong>. Mientras estuviera en su territorio, era absoluto, imparable, dueño de la probabilidad y del destino.</p>
+    </section>
+
+    <!-- Música principal del casino -->
+    <audio id="casinoMusic" loop autoplay>
+        <source id="musicSource" src="Musica/Interdimensional Casino (Instrumental).mp3" type="audio/mpeg">
+        Tu navegador no soporta audio.
+    </audio>
+
+    <!-- Controles -->
+    <div class="music-controls">
+        <button onclick="toggleMute()">Music On/Off</button>
+        <button onclick="changeMusic('Musica/Interdimensional Casino (Instrumental).mp3')">Instrumental</button>
+        <button onclick="changeMusic('Musica/Interdimensional Casino (Lyrics).mp3')">Lyrics</button>
     </div>
-  </div>
 
-  <!-- ESCENARIO -->
-  <div id="stage"></div>
+    <!-- Scripts -->
+    <script src="script.js" defer></script>
+    <script>
+        // Música principal
+        const music = document.getElementById('casinoMusic');
+        const source = document.getElementById('musicSource');
 
-  <!-- DISCO -->
-  <div id="music-disc" class="paused">
-    <img src="Imagenes/Disco.png" alt="Disco">
-  </div>
+        function toggleMute() {
+            if (music.paused) {
+                music.play();
+            } else {
+                music.pause();
+            }
+        }
 
-  <!-- AUDIO -->
-  <audio id="music" loop>
-    <source src="Musica/Rift Casino (Instrumental).mp3" type="audio/mpeg">
-  </audio>
+        function changeMusic(file) {
+            const isPlaying = !music.paused;
+            music.pause();
+            source.src = file;
+            music.load();
+            if (isPlaying) music.play();
+        }
 
-  <script src="script.js"></script>
+        // Música de Parallax
+        const parallaxMusicBtn = document.getElementById("play-music");
+        const parallaxMusic = new Audio("Musica/Interdimensional Casino (Instrumental)"); // Cambia al archivo real
+        parallaxMusic.loop = true;
+
+        // Seleccionamos el audio principal
+
+    parallaxMusicBtn.addEventListener("click", () => {
+    if (music.paused) {
+        music.src = "Musica/Interdimensional Casino (Instrumental).mp3"; // pista por defecto
+        music.load();
+        music.play();
+        parallaxMusicBtn.textContent = "🔊 Pausar música";
+    } else {
+        music.pause();
+        parallaxMusicBtn.textContent = "🎵 Reproducir música";
+    }
+});
+    </script>
 </body>
 </html>
