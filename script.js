@@ -130,7 +130,7 @@ function createCard() {
     fall();
 }
 
-setInterval(createCard, 150);
+setInterval(createCard, 90);
 
 /* ---------------------------------------
    FICHAS
@@ -198,7 +198,7 @@ function animateChips() {
 }
 
 animateChips();
-setInterval(createChip, 180);
+setInterval(createChip, 90);
 
 // Limpiar todas las cartas cada 3 minutos
 /*setInterval(() => {
