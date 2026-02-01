@@ -116,8 +116,8 @@ body {
 
         .secret-section p {
             margin-bottom: 20px;
-            color: rgb(231, 231, 231);
-            background-color: #0000002f;
+            color: rgb(228, 196, 17);
+            background-color: #00000088;
         }
 
         /* Botones de música principal */
@@ -178,4 +178,31 @@ body {
 .breach-link:hover {
   /* El "brillo": primer 0 (X), segundo 0 (Y), 6px (difuminado), color (naranja) */
   text-shadow: 0 0 6px rgba(255, 188, 95, 0.7);
+}
+
+#odds-controls {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 4;
+
+  display: flex;
+  gap: 15px;
+
+  background: rgba(0,0,0,0.6);
+  padding: 15px 20px;
+  border-radius: 12px;
+  border: 1px solid #ff9f1c;
+  backdrop-filter: blur(4px);
+}
+
+#odds-controls label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.8rem;
+  color: #ffcc66;
+}
+
+#odds-controls input[type="range"] {
+  width: 120px;
 }

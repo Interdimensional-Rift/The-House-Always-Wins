@@ -130,7 +130,7 @@ function createCard() {
     fall();
 }
 
-setInterval(createCard, 90);
+
 
 /* ---------------------------------------
    FICHAS
@@ -198,7 +198,7 @@ function animateChips() {
 }
 
 animateChips();
-setInterval(createChip, 90);
+
 
 // Limpiar todas las cartas cada 3 minutos
 /*setInterval(() => {
@@ -213,3 +213,35 @@ setInterval(createChip, 90);
     }
     chips.length = 0;
 }, 180000);*/
+
+const cardsSlider = document.getElementById("cardsRate");
+const chipsSlider = document.getElementById("chipsRate");
+
+let cardsInterval = null;
+let chipsInterval = null;
+
+function updateCardsRate() {
+  if (cardsInterval) clearInterval(cardsInterval);
+
+  const value = cardsSlider.value;
+  if (value > 0) {
+    const delay = 200 - value * 1.8;
+    cardsInterval = setInterval(createCard, delay);
+  }
+}
+
+function updateChipsRate() {
+  if (chipsInterval) clearInterval(chipsInterval);
+
+  const value = chipsSlider.value;
+  if (value > 0) {
+    const delay = 220 - value * 2;
+    chipsInterval = setInterval(createChip, delay);
+  }
+}
+
+cardsSlider.addEventListener("input", updateCardsRate);
+chipsSlider.addEventListener("input", updateChipsRate);
+
+updateCardsRate();
+updateChipsRate();
