@@ -95,14 +95,17 @@
     <!-- Controles de apuestas -->
 <div id="odds-controls">
   <label>
-    Cartas: <span id="cardsValue">10</span>
+    Cartas:
+    <input type="number" id="cardsInput" min="0" max="255" value="10">
     <input type="range" id="cardsRate" min="0" max="255" value="10">
   </label>
 
   <label>
-    Fichas: <span id="chipsValue">15</span>
+    Fichas:
+    <input type="number" id="chipsInput" min="0" max="255" value="15">
     <input type="range" id="chipsRate" min="0" max="255" value="15">
   </label>
+</div>
 </div>
 
 </body>

@@ -3,11 +3,8 @@ const container = document.getElementById('game-container');
 /* ---------------------------------------
    CONFIGURACIÓN GENERAL
 --------------------------------------- */
-const maxCards = 150;
-const maxChips = 200;
-
-const cardsValueText = document.getElementById("cardsValue");
-const chipsValueText = document.getElementById("chipsValue");
+const maxCards = 255;
+const maxChips = 255;
 
 let paused = false;
 document.addEventListener('visibilitychange', () => {
@@ -18,7 +15,6 @@ document.addEventListener('visibilitychange', () => {
    CARTAS
 --------------------------------------- */
 
-// Lista de cartas
 const cards = [
   'imagenes/Jocker_Cards/JockerCard.png',
   'imagenes/Diamond_Cards/DiamondCard-A.png',
@@ -133,8 +129,6 @@ function createCard() {
     fall();
 }
 
-
-
 /* ---------------------------------------
    FICHAS
 --------------------------------------- */
@@ -155,8 +149,7 @@ function createChip() {
     const chip = document.createElement('div');
     chip.classList.add('card');
 
-    // Tamaño aleatorio
-    const size = 15 + Math.random() * 30; // 15px a 45px
+    const size = 15 + Math.random() * 30;
     chip.style.width = size + 'px';
     chip.style.height = size + 'px';
 
@@ -166,11 +159,9 @@ function createChip() {
     chip.style.left = `${Math.random() * (window.innerWidth - size)}px`;
     chip.style.top = '-80px';
 
-    // Velocidad dependiente del tamaño (grande = más lento)
     chip.speed = 4 - (size / 15);
     if (chip.speed < 0.8) chip.speed = 0.8;
 
-    // Rotación propia (rodando)
     chip.rotation = Math.random() * 360;
     chip.rotationSpeed = (Math.random() * 4 + 2) * (Math.random() < 0.5 ? -1 : 1);
 
@@ -202,23 +193,15 @@ function animateChips() {
 
 animateChips();
 
-
-// Limpiar todas las cartas cada 3 minutos
-/*setInterval(() => {
-    const allCards = document.querySelectorAll('.card');
-    allCards.forEach(card => card.remove());
-}, 180000);*/
-
-// Limpieza periódica de fichas
-/*setInterval(() => {
-    for (let chip of chips) {
-        container.removeChild(chip);
-    }
-    chips.length = 0;
-}, 180000);*/
+/* ---------------------------------------
+   CONTROLES (SLIDER + INPUT)
+--------------------------------------- */
 
 const cardsSlider = document.getElementById("cardsRate");
 const chipsSlider = document.getElementById("chipsRate");
+
+const cardsInput = document.getElementById("cardsInput");
+const chipsInput = document.getElementById("chipsInput");
 
 let cardsInterval = null;
 let chipsInterval = null;
@@ -226,11 +209,11 @@ let chipsInterval = null;
 function updateCardsRate() {
   if (cardsInterval) clearInterval(cardsInterval);
 
-  const value = parseInt(cardsSlider.value);
-  cardsValueText.textContent = value;
+  let value = parseInt(cardsSlider.value);
+  cardsInput.value = value;
 
   if (value > 0) {
-    const delay = 500 - value * 1.8; // ajustado para rango 0–255
+    const delay = 500 - value * 1.8;
     cardsInterval = setInterval(createCard, Math.max(10, delay));
   }
 }
@@ -238,8 +221,8 @@ function updateCardsRate() {
 function updateChipsRate() {
   if (chipsInterval) clearInterval(chipsInterval);
 
-  const value = parseInt(chipsSlider.value);
-  chipsValueText.textContent = value;
+  let value = parseInt(chipsSlider.value);
+  chipsInput.value = value;
 
   if (value > 0) {
     const delay = 500 - value * 1.8;
@@ -250,5 +233,22 @@ function updateChipsRate() {
 cardsSlider.addEventListener("input", updateCardsRate);
 chipsSlider.addEventListener("input", updateChipsRate);
 
+cardsInput.addEventListener("input", () => {
+  let value = parseInt(cardsInput.value) || 0;
+  value = Math.max(0, Math.min(255, value));
+  cardsInput.value = value;
+  cardsSlider.value = value;
+  updateCardsRate();
+});
+
+chipsInput.addEventListener("input", () => {
+  let value = parseInt(chipsInput.value) || 0;
+  value = Math.max(0, Math.min(255, value));
+  chipsInput.value = value;
+  chipsSlider.value = value;
+  updateChipsRate();
+});
+
+// iniciar valores por defecto
 updateCardsRate();
 updateChipsRate();
