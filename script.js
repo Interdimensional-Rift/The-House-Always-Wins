@@ -6,6 +6,9 @@ const container = document.getElementById('game-container');
 const maxCards = 150;
 const maxChips = 200;
 
+const cardsValueText = document.getElementById("cardsValue");
+const chipsValueText = document.getElementById("chipsValue");
+
 let paused = false;
 document.addEventListener('visibilitychange', () => {
     paused = document.hidden;
@@ -223,20 +226,24 @@ let chipsInterval = null;
 function updateCardsRate() {
   if (cardsInterval) clearInterval(cardsInterval);
 
-  const value = cardsSlider.value;
+  const value = parseInt(cardsSlider.value);
+  cardsValueText.textContent = value;
+
   if (value > 0) {
-    const delay = 200 - value * 1.8;
-    cardsInterval = setInterval(createCard, delay);
+    const delay = 500 - value * 1.8; // ajustado para rango 0–255
+    cardsInterval = setInterval(createCard, Math.max(10, delay));
   }
 }
 
 function updateChipsRate() {
   if (chipsInterval) clearInterval(chipsInterval);
 
-  const value = chipsSlider.value;
+  const value = parseInt(chipsSlider.value);
+  chipsValueText.textContent = value;
+
   if (value > 0) {
-    const delay = 220 - value * 2;
-    chipsInterval = setInterval(createChip, delay);
+    const delay = 500 - value * 1.8;
+    chipsInterval = setInterval(createChip, Math.max(10, delay));
   }
 }
 

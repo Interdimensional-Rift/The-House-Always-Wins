@@ -206,3 +206,10 @@ body {
 #odds-controls input[type="range"] {
   width: 120px;
 }
+
+/* Numeros Bonito */
+#odds-controls span {
+  font-weight: bold;
+  color: #ff9f1c;
+  margin-left: 5px;
+}
