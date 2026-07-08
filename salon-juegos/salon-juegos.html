@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salón de Juegos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container"></div>
+
+    <div id="chip-counter">
+        <span>Fichas:</span>
+        <strong id="chips-count">0</strong>
+    </div>
+    
+  <div id="contenedor-principal">
+    <section id="deal-scene" class="deal-scene">
+      <div class="deal-dialogue">
+        <p id="deal-text" class="deal-text">¿Aceptas el trato?</p>
+
+        <div id="deal-buttons" class="deal-buttons">
+          <button id="accept-deal" type="button">Aceptar</button>
+          <button id="deny-deal" type="button">Denegar</button>
+        </div>
+      </div>
+
+      <div id="game-options" class="game-options">
+        <p>¿Qué deseas hacer?</p>
+
+        <div class="game-options-buttons">
+          <button id="jugar" type="button">Jugar</button>
+          <button id="explorar" type="button">Explorar</button>
+          <button id="salir" type="button">Volver</button>
+        </div>
+      </div>
+
+      <div id="explore-panel" class="explore-panel">
+        <p id="character-name" class="character-name"></p>
+        <p id="character-dialogue" class="character-dialogue"></p>
+
+        <div class="panel-buttons">
+          <button id="next-character" type="button">Leer otro</button>
+          <button id="close-explore" type="button">Volver</button>
+        </div>
+      </div>
+
+      <div id="games-panel" class="games-panel">
+        <div class="games-grid">
+          <button class="game-card" type="button">
+            <div class="game-image">777</div>
+            <span>Slots 777</span>
+          </button>
+
+          <button class="game-card" type="button">
+            <div class="game-image">A♠</div>
+            <span>Black Jack</span>
+          </button>
+
+          <button class="game-card" type="button">
+            <div class="game-image">K♦</div>
+            <span>Poker</span>
+          </button>
+
+          <button class="game-card" type="button">
+            <div class="game-image">⚂⚄</div>
+            <span>Dados</span>
+          </button>
+        </div>
+
+        <button id="close-games" class="games-back" type="button">Volver</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="script.js" defer></script>
+  <script src="fichas.js" defer></script>
+</body>
+</html>
