@@ -252,3 +252,19 @@ chipsInput.addEventListener("input", () => {
 // iniciar valores por defecto
 updateCardsRate();
 updateChipsRate();
+
+/* ---------------------------------------
+   ENTRADA OCULTA AL SALÓN DE JUEGOS
+--------------------------------------- */
+
+const gameRoomSecretImg = document.getElementById("game-room-secret-img");
+
+if (localStorage.getItem("visitedGameRoom") === "true") {
+  gameRoomSecretImg.src = "imagenes/entrada-salon-usada.png";
+}
+
+const gameRoomSecret = document.getElementById("game-room-secret");
+
+gameRoomSecret.addEventListener("click", () => {
+  localStorage.setItem("visitedGameRoom", "true");
+});

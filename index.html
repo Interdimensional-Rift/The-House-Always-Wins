@@ -10,6 +10,16 @@
 <body>
     <div id="game-container"></div>
 
+    
+    <a id="game-room-secret" class="game-room-secret" href="salon-juegos/salon-juegos.html">
+        <img
+            id="game-room-secret-img"
+            src="imagenes/entrada-salon.png"
+            alt="Entrada al salón de juegos"
+        >
+    </a>
+
+
     <!-- Intro Parallax -->
     <section id="parallax-intro" class="intro-section">
         <div class="intro-box">
@@ -53,8 +63,8 @@
     <script src="script.js" defer></script>
     <script>
         // Música principal
-        const music = document.getElementById('casinoMusic');
-        const source = document.getElementById('musicSource');
+        const music = document.getElementById("casinoMusic");
+        const source = document.getElementById("musicSource");
 
         function toggleMute() {
             if (music.paused) {
