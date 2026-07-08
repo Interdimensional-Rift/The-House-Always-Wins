@@ -59,19 +59,16 @@ function stopReelSpin(reel, index, finalSymbol) {
 function getSlotsPrize(bet, result) {
   const [a, b, c] = result;
 
-  // JACKPOT: Tres Sietes
   if (a === "7️⃣" && b === "7️⃣" && c === "7️⃣") {
-    return bet * 50; // Subimos el premio a x50 porque es extremadamente raro
+    return bet * 50;
   }
 
-  // Tres iguales (Cualquiera que no sea 7)
   if (a === b && b === c) {
-    return bet * 4; // Bajamos de x5 a x4 para proteger la banca del casino
+    return bet * 5;
   }
 
-  // Dos iguales (Premio de consolación)
   if (a === b || a === c || b === c) {
-    return bet * 1; // Devolvemos solo la apuesta (x1) en lugar de x2
+    return bet * 1;
   }
 
   return 0;
@@ -127,11 +124,7 @@ async function spinSlots() {
   await wait(350);
   slotsLever.classList.remove("pulled");
 
-  const result = [
-    randomSlotSymbol(),
-    randomSlotSymbol(),
-    randomSlotSymbol()
-  ];
+  const result = createSlotResult();
 
   await wait(700);
   stopReelSpin(slotReels[0], 0, result[0]);
@@ -158,3 +151,57 @@ async function spinSlots() {
 openSlotsButton.addEventListener("click", openSlots);
 closeSlotsButton.addEventListener("click", closeSlots);
 spinSlotsButton.addEventListener("click", spinSlots);
+
+function createSlotResult() {
+  const roll = Math.random();
+
+  // Muy raro: jackpot x50
+  if (roll < 0.05) {
+    return ["7️⃣", "7️⃣", "7️⃣"];
+  }
+
+  // Raro: tres iguales x5
+  if (roll < 0.02) {
+    const symbols = ["🍋", "🍒", "🔔", "💎", "⭐"];
+    const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+    return [symbol, symbol, symbol];
+  }
+
+  // Poco común: dos iguales x1
+  if (roll < 0.12) {
+    const pairSymbols = ["🍋", "🍒", "🔔", "💎", "⭐"];
+    const pairSymbol = pairSymbols[Math.floor(Math.random() * pairSymbols.length)];
+
+    let differentSymbol = randomSlotSymbol();
+
+    while (differentSymbol === pairSymbol) {
+      differentSymbol = randomSlotSymbol();
+    }
+
+    const result = [pairSymbol, pairSymbol, differentSymbol];
+
+    for (let i = result.length - 1; i > 0; i--) {
+      const randomIndex = Math.floor(Math.random() * (i + 1));
+      [result[i], result[randomIndex]] = [result[randomIndex], result[i]];
+    }
+
+    return result;
+  }
+
+  // Casi siempre: tres diferentes
+  return createLosingResult();
+}
+
+function createLosingResult() {
+  const result = [];
+
+  while (result.length < 3) {
+    const symbol = randomSlotSymbol();
+
+    if (!result.includes(symbol)) {
+      result.push(symbol);
+    }
+  }
+
+  return result;
+}
