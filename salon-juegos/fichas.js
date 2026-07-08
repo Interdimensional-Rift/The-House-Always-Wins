@@ -1,8 +1,6 @@
 const container = document.getElementById("game-container");
 const chipsCountText = document.getElementById("chips-count");
 
-const isMobile = window.innerWidth <= 768;
-
 if (!container) {
   console.error("No existe #game-container en el HTML.");
 }
@@ -31,6 +29,25 @@ function addPlayerChips(amount) {
   updateChipCounter();
 }
 
+window.casino = {
+  getChips() {
+    return playerChips;
+  },
+
+  addChips(amount) {
+    addPlayerChips(amount);
+  },
+
+  spendChips(amount) {
+    if (playerChips < amount) {
+      return false;
+    }
+
+    addPlayerChips(-amount);
+    return true;
+  }
+};
+
 function activateChipMultiplier(multiplier, duration) {
   chipMultiplier = multiplier;
 
@@ -49,8 +66,8 @@ updateChipCounter();
    CONFIGURACION GENERAL
 --------------------------------------- */
 
-const maxCards = isMobile ? 25 : 255;
-const maxChips = isMobile ? 20 : 255;
+const maxCards = 255;
+const maxChips = 255;
 
 let paused = false;
 
@@ -247,10 +264,7 @@ function collectChip(chip) {
 }
 
 function createChipExplosion(x, y) {
-  // En móvil genera solo 4 mini-fichas, en PC las 12 originales
-  const particleCount = isMobile ? 4 : 12;
-
-  for (let i = 0; i < particleCount; i++) {
+  for (let i = 0; i < 12; i++) {
     const miniChip = document.createElement("div");
     miniChip.classList.add("chip-pop");
 
@@ -314,11 +328,24 @@ function animateChips() {
 const fixedCardsRate = 35;
 const fixedChipsRate = 22;
 
-// Si es móvil multiplicamos el delay para que salgan más lento
-const cardsDelay = (500 - fixedCardsRate * 1.8) * (isMobile ? 2.5 : 1);
-const chipsDelay = (500 - fixedChipsRate * 1.8) * (isMobile ? 2.5 : 1);
+const cardsDelay = 500 - fixedCardsRate * 1.8;
+const chipsDelay = 500 - fixedChipsRate * 1.8;
 
 animateChips();
 
-setInterval(createCard, Math.max(10, cardsDelay));
-setInterval(createChip, Math.max(10, chipsDelay));
+let backgroundStarted = false;
+let cardsInterval = null;
+let chipsInterval = null;
+
+function startBackgroundFall() {
+  if (backgroundStarted) return;
+
+  backgroundStarted = true;
+
+  cardsInterval = setInterval(createCard, Math.max(10, cardsDelay));
+  chipsInterval = setInterval(createChip, Math.max(10, chipsDelay));
+}
+
+window.addEventListener("casinoMusicStarted", () => {
+  startBackgroundFall();
+});

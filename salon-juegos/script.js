@@ -61,10 +61,9 @@ const characters = [
     dialogue: "He visto a gente ganar con mala suerte y perder con una sonrisa perfecta."
   },
   {
-    name: "Miguel Ángel, el ludópata",
-    dialogue: "¿Quieres apostar un rato?" 
-    /*Añadir como mensaje especial y agregar que puedas jugar contra él con mensajes personalizados por si pierdes o ganas y que sea desbloqueado para siempre*/
-  },
+    name: "¿?",
+    dialogue: "Sin dolor, no hay glória."
+  }
 ];
 
 const specialMessages = [
@@ -83,10 +82,10 @@ const specialMessages = [
     }
   },
   {
-    name: "La deuda invisible",
-    dialogue: "Algo se cobra una pequeña parte de tus fichas.",
+    name: "El mensaje maldito",
+    dialogue: "Dice: '666'. De pronto te das cuenta, tu bolsillo está roto. Se te han caído 666 fichas.",
     effect() {
-      addPlayerChips(-75);
+      addPlayerChips(-666);
     }
   },
   {
@@ -95,15 +94,23 @@ const specialMessages = [
     effect() {
       addPlayerChips(300);
     }
-  }
+  },
+  {
+    name: "Miguel Ángel, el ludópata",
+    dialogue: "¿Quieres apostar un rato? (en preparación)",
+    /*Añadir como mensaje especial y agregar que puedas jugar contra él con mensajes personalizados por si pierdes o ganas y que sea desbloqueado para siempre*/
+  },
 ];
 
 let characterBag = [];
 
-function playMusicSafely() {
-  gameRoomMusic.play().catch(() => {
+async function playMusicSafely() {
+  try {
+    await gameRoomMusic.play();
+    window.dispatchEvent(new Event("casinoMusicStarted"));
+  } catch {
     console.log("El navegador bloqueó la música hasta que el usuario haga click.");
-  });
+  }
 }
 
 function wait(ms) {
@@ -118,6 +125,41 @@ async function typeText(text = "", speed = 45) {
     dealText.textContent += letter;
     await wait(speed);
   }
+}
+
+async function bienvenida() {
+  dealButtons.classList.remove("visible");
+  gamebuttons.classList.remove("visible");
+  gamebuttons.classList.add("hidden");
+
+  dealScene.classList.remove("revealing");
+  dealDialogue.classList.remove("hidden-dialogue");
+
+  document.body.classList.add("vignette-open");
+
+  const dialogue = [
+    {
+      text: "Bienvenido de nuevo...",
+      speed: 55,
+      after: 1200
+    },
+    {
+      text: "Disfruta de tu estancia...",
+      speed: 50,
+      after: 1500
+    }
+  ];
+
+  for (const line of dialogue) {
+    dealText.classList.remove("visible");
+    await wait(500);
+
+    await typeText(line.text, line.speed);
+    await wait(line.after);
+  }
+
+  playMusicSafely();
+  showMainOptions();
 }
 
 async function playDenyDeal() {
@@ -213,7 +255,7 @@ async function playAcceptedDialogue() {
     }
 
     if (line.playMusic) {
-      gameRoomMusic.play();
+    playMusicSafely();
     }
 
     await typeText(line.text, line.speed);
@@ -241,16 +283,11 @@ function hidePanels() {
 function skipIntroAfterAcceptedDeal() {
   const alreadyAcceptedDeal = localStorage.getItem("acceptedDeal") === "true";
 
-  if (!alreadyAcceptedDeal) return false;
+  if (!alreadyAcceptedDeal) {
+    return false;
+  }
 
-  dealButtons.classList.remove("visible");
-  dealText.classList.remove("visible");
-
-  document.body.classList.add("vignette-open");
-  showMainOptions();
-
-  playMusicSafely();
-
+  bienvenida();
   return true;
 }
 
@@ -321,7 +358,10 @@ function showRandomCharacter() {
 
     characterName.textContent = special.name;
     characterDialogue.textContent = special.dialogue;
-    special.effect();
+
+    if (typeof special.effect === "function") {
+      special.effect();
+    }
 
     return;
   }

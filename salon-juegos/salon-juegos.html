@@ -47,9 +47,10 @@
 
       <div id="games-panel" class="games-panel">
         <div class="games-grid">
-          <button class="game-card" type="button">
+          <button id="open-slots" class="game-card" type="button">
             <div class="game-image">777</div>
             <span>Slots 777</span>
+          </button>
           </button>
 
           <button class="game-card" type="button">
@@ -67,6 +68,36 @@
             <span>Dados</span>
           </button>
         </div>
+        
+        <div id="slots-machine" class="slots-machine">
+  <div class="slots-top">SLOTS 777</div>
+
+  <div class="slots-body">
+    <div class="slots-reels">
+      <div class="slot-reel" id="slot-1">🍒</div>
+      <div class="slot-reel" id="slot-2">🔔</div>
+      <div class="slot-reel" id="slot-3">💎</div>
+    </div>
+
+    <div id="slots-lever" class="slots-lever">
+      <div class="lever-stick"></div>
+      <div class="lever-ball"></div>
+    </div>
+  </div>
+
+  <div class="slots-controls">
+        <label>
+          Apuesta
+          <input id="slots-bet" type="number" min="1" value="10">
+        </label>
+
+        <button id="spin-slots" type="button">Girar</button>
+  </div>
+
+    <p id="slots-message" class="slots-message"></p>
+
+    <button id="close-slots" class="games-back" type="button">Volver</button>
+  </div>
 
         <button id="close-games" class="games-back" type="button">Volver</button>
       </div>
@@ -75,5 +106,9 @@
 
   <script src="script.js" defer></script>
   <script src="fichas.js" defer></script>
+  <script src="slots.js" defer></script>
+  <script src="black-jack.js" defer></script>
+  <script src="poker.js" defer></script>
+  <script src="dados.js" defer></script>
 </body>
 </html>
