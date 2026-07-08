@@ -1,38 +1,3 @@
-/*function jugarSlots(apuesta) {
-  if (!window.casino.spendChips(apuesta)) {
-    alert("No tienes fichas suficientes.");
-    return;
-  }
-
-  const ganar125 = Math.random() < 0.5;
-  const ganar200 = Math.random() < 0.25;
-  const ganar300 = Math.random() < 0.1;
-
-  if (ganar125) {
-    const premio = apuesta * 1.25;
-    window.casino.addChips(premio);
-    alert(`Ganaste ${premio} fichas.`);
-  } else {
-    alert("Perdiste la apuesta.");
-  }
-  
-  if (ganar200) {
-    const premio = apuesta * 2;
-    window.casino.addChips(premio);
-    alert(`Ganaste ${premio} fichas.`);
-  } else {
-    alert("Perdiste la apuesta.")
-  }
-
-  if (ganar300) {
-    const premio = apuesta * 3;
-    window.casino.addChips(premio);
-    alert(`Ganaste ${premio} fichas.`);
-  } else {
-    alert("Perdiste la apuesta.")
-  }
-}*/
-
 const openSlotsButton = document.getElementById("open-slots");
 const slotsMachine = document.getElementById("slots-machine");
 const closeSlotsButton = document.getElementById("close-slots");
@@ -47,7 +12,16 @@ const slotReels = [
   document.getElementById("slot-3")
 ];
 
-const slotSymbols = ["🍒", "🔔", "💎", "7️⃣", "🍋", "⭐"];
+const slotSymbolsWithWeights = [
+  { symbol: "🍋", weight: 35 }, // Muy común (35% de opciones por rodillo)
+  { symbol: "🍒", weight: 28 }, // Común
+  { symbol: "🔔", weight: 18 }, // Poco común
+  { symbol: "💎", weight: 12 }, // Raro
+  { symbol: "⭐", weight: 5 },  // Muy raro
+  { symbol: "7️⃣", weight: 2 }   // Casi imposible (2% de opciones por rodillo)
+];
+
+const totalWeight = slotSymbolsWithWeights.reduce((sum, item) => sum + item.weight, 0);
 
 let slotsSpinning = false;
 let slotSpinIntervals = [];
@@ -57,7 +31,15 @@ function wait(ms) {
 }
 
 function randomSlotSymbol() {
-  return slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
+  const randomNum = Math.floor(Math.random() * totalWeight); // Número entre 0 y 99
+  let weightSum = 0;
+
+  for (const item of slotSymbolsWithWeights) {
+    weightSum += item.weight;
+    if (randomNum < weightSum) {
+      return item.symbol; // Devuelve el símbolo según su probabilidad
+    }
+  }
 }
 
 function startReelSpin(reel, index) {
@@ -77,20 +59,24 @@ function stopReelSpin(reel, index, finalSymbol) {
 function getSlotsPrize(bet, result) {
   const [a, b, c] = result;
 
+  // JACKPOT: Tres Sietes
   if (a === "7️⃣" && b === "7️⃣" && c === "7️⃣") {
-    return bet * 10;
+    return bet * 50; // Subimos el premio a x50 porque es extremadamente raro
   }
 
+  // Tres iguales (Cualquiera que no sea 7)
   if (a === b && b === c) {
-    return bet * 5;
+    return bet * 4; // Bajamos de x5 a x4 para proteger la banca del casino
   }
 
+  // Dos iguales (Premio de consolación)
   if (a === b || a === c || b === c) {
-    return bet * 2;
+    return bet * 1; // Devolvemos solo la apuesta (x1) en lugar de x2
   }
 
   return 0;
 }
+
 
 function openSlots() {
   const gamesGrid = document.querySelector(".games-grid");
