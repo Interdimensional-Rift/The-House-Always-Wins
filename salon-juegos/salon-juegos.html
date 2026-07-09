@@ -7,13 +7,13 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="game-container"></div>
+  <div id="game-container"></div>
 
-    <div id="chip-counter">
-        <span>Fichas:</span>
-        <strong id="chips-count">0</strong>
-    </div>
-    
+  <div id="chip-counter">
+    <span>Fichas:</span>
+    <strong id="chips-count">0</strong>
+  </div>
+
   <div id="contenedor-principal">
     <section id="deal-scene" class="deal-scene">
       <div class="deal-dialogue">
@@ -51,7 +51,6 @@
             <div class="game-image">777</div>
             <span>Slots 777</span>
           </button>
-          </button>
 
           <button class="game-card" type="button">
             <div class="game-image">A♠</div>
@@ -63,41 +62,108 @@
             <span>Poker</span>
           </button>
 
-          <button class="game-card" type="button">
+          <button id="open-dice" class="game-card" type="button">
             <div class="game-image">⚂⚄</div>
             <span>Dados</span>
           </button>
         </div>
-        
+
         <div id="slots-machine" class="slots-machine">
-  <div class="slots-top">SLOTS 777</div>
+          <div class="game-header">
+            <div class="slots-top">SLOTS 777</div>
+            <button id="slots-help-button" class="help-button" type="button">?</button>
+          </div>
 
-  <div class="slots-body">
-    <div class="slots-reels">
-      <div class="slot-reel" id="slot-1">🍒</div>
-      <div class="slot-reel" id="slot-2">🔔</div>
-      <div class="slot-reel" id="slot-3">💎</div>
-    </div>
+          <div id="slots-help" class="rules-panel">
+            <p><strong>Multiplicadores:</strong></p>
+            <p>Dos iguales: x2</p>
+            <p>Tres iguales: x5</p>
+            <p>Tres 7: x50</p>
+          </div>
 
-    <div id="slots-lever" class="slots-lever">
-      <div class="lever-stick"></div>
-      <div class="lever-ball"></div>
-    </div>
-  </div>
+          <div class="slots-body">
+            <div class="slots-reels">
+              <div class="slot-reel" id="slot-1">🍒</div>
+              <div class="slot-reel" id="slot-2">🔔</div>
+              <div class="slot-reel" id="slot-3">💎</div>
+            </div>
 
-  <div class="slots-controls">
-        <label>
-          Apuesta
-          <input id="slots-bet" type="number" min="1" value="10">
-        </label>
+            <div id="slots-lever" class="slots-lever">
+              <div class="lever-stick"></div>
+              <div class="lever-ball"></div>
+            </div>
+          </div>
 
-        <button id="spin-slots" type="button">Girar</button>
-  </div>
+          <div class="slots-controls">
+            <label>
+              Apuesta
+              <input id="slots-bet" type="number" min="1" value="10">
+            </label>
 
-    <p id="slots-message" class="slots-message"></p>
+            <button id="spin-slots" type="button">Girar</button>
+          </div>
 
-    <button id="close-slots" class="games-back" type="button">Volver</button>
-  </div>
+          <p id="slots-message" class="slots-message"></p>
+          <button id="close-slots" class="games-back" type="button">Volver</button>
+        </div>
+
+        <div id="dice-game" class="dice-game">
+          <div class="game-header">
+            <div class="dice-header">
+              <h2>Dados</h2>
+              <p>Objetivo: <span id="dice-target">2000</span> puntos</p>
+            </div>
+
+            <button id="dice-help-button" class="help-button" type="button">?</button>
+          </div>
+
+          <div id="dice-help" class="rules-panel">
+            <p>Llega al objetivo antes que el rival.</p>
+            <p>Debes apostar fichas para empezar.</p>
+            <p>Los 1 valen 100 puntos. Los 5 valen 5 puntos.</p>
+            <p>Tres iguales valen número x100. Tres 1 valen 1000.</p>
+            <p>Cuatro iguales suman 100 puntos extra.</p>
+            <p>Si tiras y no puedes coger nada, pierdes los puntos no guardados.</p>
+          </div>
+
+          <div class="dice-bet-box">
+            <label>
+              Apuesta
+              <input id="dice-bet" type="number" min="1" value="25">
+            </label>
+
+            <button id="start-dice" type="button">Empezar</button>
+          </div>
+
+          <div class="dice-scoreboard">
+            <div>
+              <span>Jugador</span>
+              <strong id="player-score">0</strong>
+            </div>
+
+            <div>
+              <span>Rival</span>
+              <strong id="ai-score">0</strong>
+            </div>
+
+            <div>
+              <span>Turno</span>
+              <strong id="turn-score">0</strong>
+            </div>
+          </div>
+
+          <div id="dice-area" class="dice-area"></div>
+
+          <p id="dice-message" class="dice-message"></p>
+
+          <div class="dice-controls">
+            <button id="take-dice" type="button">Coger</button>
+            <button id="roll-dice" type="button">Tirar otra vez</button>
+            <button id="bank-dice" type="button">Guardar</button>
+          </div>
+
+          <button id="close-dice" class="games-back" type="button">Volver</button>
+        </div>
 
         <button id="close-games" class="games-back" type="button">Volver</button>
       </div>
@@ -107,8 +173,6 @@
   <script src="script.js" defer></script>
   <script src="fichas.js" defer></script>
   <script src="slots.js" defer></script>
-  <script src="black-jack.js" defer></script>
-  <script src="poker.js" defer></script>
   <script src="dados.js" defer></script>
 </body>
 </html>

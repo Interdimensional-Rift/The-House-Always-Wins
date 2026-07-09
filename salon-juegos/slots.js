@@ -6,6 +6,9 @@ const slotsBetInput = document.getElementById("slots-bet");
 const slotsMessage = document.getElementById("slots-message");
 const slotsLever = document.getElementById("slots-lever");
 
+const slotsHelpButton = document.getElementById("slots-help-button");
+const slotsHelp = document.getElementById("slots-help");
+
 const slotReels = [
   document.getElementById("slot-1"),
   document.getElementById("slot-2"),
@@ -68,7 +71,7 @@ function getSlotsPrize(bet, result) {
   }
 
   if (a === b || a === c || b === c) {
-    return bet * 1;
+    return bet * 2;
   }
 
   return 0;
@@ -156,7 +159,7 @@ function createSlotResult() {
   const roll = Math.random();
 
   // Muy raro: jackpot x50
-  if (roll < 0.05) {
+  if (roll < 0.02) {
     return ["7️⃣", "7️⃣", "7️⃣"];
   }
 
@@ -205,3 +208,7 @@ function createLosingResult() {
 
   return result;
 }
+
+slotsHelpButton.addEventListener("click", () => {
+  slotsHelp.classList.toggle("visible");
+});
