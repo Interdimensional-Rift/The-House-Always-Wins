@@ -63,11 +63,21 @@ function activateChipMultiplier(multiplier, duration) {
 updateChipCounter();
 
 /* ---------------------------------------
-   CONFIGURACION GENERAL
+   DETECCIÓN DE MÓVIL Y CONFIGURACIÓN DINÁMICA
 --------------------------------------- */
 
-const maxCards = 255;
-const maxChips = 255;
+// Detecta si es un dispositivo móvil por el ancho de pantalla o el userAgent
+const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+// Configuración adaptativa según el dispositivo
+const maxCards = isMobile ? 60 : 255;  // Reducido significativamente en móvil
+const maxChips = isMobile ? 30 : 255;  // Reducido significativamente en móvil
+
+const fixedCardsRate = isMobile ? 12 : 35; // Menos cantidad por segundo en móvil
+const fixedChipsRate = isMobile ? 8 : 22;  // Menos cantidad por segundo en móvil
+
+const cardsDelay = 500 - fixedCardsRate * 1.8;
+const chipsDelay = 500 - fixedChipsRate * 1.8;
 
 let paused = false;
 
@@ -251,7 +261,11 @@ function collectChip(chip) {
   const gainedChips = chip.value * chipMultiplier;
 
   addPlayerChips(gainedChips);
-  createChipExplosion(rect.left + rect.width / 2, rect.top + rect.height / 2);
+  
+  // Optimización móvil: genera menos partículas en la explosión para evitar tirones de FPS
+  const particleCount = isMobile ? 5 : 12;
+  createChipExplosion(rect.left + rect.width / 2, rect.top + rect.height / 2, particleCount);
+  
   showChipGainText(`+${gainedChips}`, rect.left, rect.top);
 
   const chipIndex = chips.indexOf(chip);
@@ -263,8 +277,8 @@ function collectChip(chip) {
   chip.remove();
 }
 
-function createChipExplosion(x, y) {
-  for (let i = 0; i < 12; i++) {
+function createChipExplosion(x, y, count) {
+  for (let i = 0; i < count; i++) {
     const miniChip = document.createElement("div");
     miniChip.classList.add("chip-pop");
 
@@ -322,14 +336,8 @@ function animateChips() {
 }
 
 /* ---------------------------------------
-   VALORES FIJOS
+   BUCLE DE INICIO
 --------------------------------------- */
-
-const fixedCardsRate = 35;
-const fixedChipsRate = 22;
-
-const cardsDelay = 500 - fixedCardsRate * 1.8;
-const chipsDelay = 500 - fixedChipsRate * 1.8;
 
 animateChips();
 
