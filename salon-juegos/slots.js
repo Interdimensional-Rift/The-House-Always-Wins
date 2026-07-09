@@ -15,13 +15,66 @@ const slotReels = [
   document.getElementById("slot-3")
 ];
 
+// ==========================================
+// CONFIGURACIÓN DE AUDIO PARA SLOTS (FILE:// COMPATIBLE)
+// ==========================================
+const SOUND_PATHS = {
+  girar: "sonidos/Tirada.mp3",       
+  slot: "sonidos/Slot.mp3",      
+  premiox2: "sonidos/slot-mashine-cashout2(completo).mp3", 
+  premiox5: "sonidos/slots-ganarX5.mp3", 
+  premiox50: "sonidos/Jackpot-Ganar(completo).mp3", 
+  perder: "sonidos/slots-perder.mp3"      
+};
+
+function playSlotSound(soundKey) {
+  try {
+    const soundPath = SOUND_PATHS[soundKey];
+    if (!soundPath) return;
+    
+    const audio = new Audio(soundPath);
+    audio.preload = "auto";
+    
+    // MODIFICADO: Aseguramos el volumen máximo nativo (1.0 es el 100%)
+    audio.volume = 1.0; 
+    
+    audio.play().catch(err => {
+      console.log(`El navegador requería interacción previa para reproducir: ${soundKey}`, err);
+    });
+  } catch (e) {
+    console.error(`Error al reproducir audio de slots (${soundKey}):`, e);
+  }
+}
+
+function animateChipsCounter(startValue, targetValue, durationSeconds, onUpdate, onComplete) {
+  const startTime = performance.now();
+  const durationMs = durationSeconds * 1000;
+
+  function update(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / durationMs, 1);
+
+    const currentValue = Math.floor(startValue + (targetValue - startValue) * progress);
+    
+    onUpdate(currentValue);
+
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    } else {
+      if (onComplete) onComplete();
+    }
+  }
+  requestAnimationFrame(update);
+}
+// ==========================================
+
 const slotSymbolsWithWeights = [
-  { symbol: "🍋", weight: 35 }, // Muy común (35% de opciones por rodillo)
-  { symbol: "🍒", weight: 28 }, // Común
-  { symbol: "🔔", weight: 18 }, // Poco común
-  { symbol: "💎", weight: 12 }, // Raro
-  { symbol: "⭐", weight: 5 },  // Muy raro
-  { symbol: "7️⃣", weight: 2 }   // Casi imposible (2% de opciones por rodillo)
+  { symbol: "🍋", weight: 35 }, 
+  { symbol: "🍒", weight: 28 }, 
+  { symbol: "🔔", weight: 18 }, 
+  { symbol: "💎", weight: 12 }, 
+  { symbol: "⭐", weight: 5 },  
+  { symbol: "7️⃣", weight: 2 }   
 ];
 
 const totalWeight = slotSymbolsWithWeights.reduce((sum, item) => sum + item.weight, 0);
@@ -34,18 +87,20 @@ function wait(ms) {
 }
 
 function randomSlotSymbol() {
-  const randomNum = Math.floor(Math.random() * totalWeight); // Número entre 0 y 99
+  const randomNum = Math.floor(Math.random() * totalWeight); 
   let weightSum = 0;
 
   for (const item of slotSymbolsWithWeights) {
     weightSum += item.weight;
     if (randomNum < weightSum) {
-      return item.symbol; // Devuelve el símbolo según su probabilidad
+      return item.symbol; 
     }
   }
 }
 
 function startReelSpin(reel, index) {
+  // Limpiamos flashes anteriores por seguridad
+  reel.classList.remove("jackpot-flash");
   reel.classList.add("spinning");
 
   slotSpinIntervals[index] = setInterval(() => {
@@ -57,6 +112,8 @@ function stopReelSpin(reel, index, finalSymbol) {
   clearInterval(slotSpinIntervals[index]);
   reel.classList.remove("spinning");
   reel.textContent = finalSymbol;
+  
+  playSlotSound("slot");
 }
 
 function getSlotsPrize(bet, result) {
@@ -77,7 +134,6 @@ function getSlotsPrize(bet, result) {
   return 0;
 }
 
-
 function openSlots() {
   const gamesGrid = document.querySelector(".games-grid");
 
@@ -92,6 +148,9 @@ function closeSlots() {
   gamesGrid.style.display = "grid";
   slotsMachine.classList.remove("visible");
   slotsMessage.textContent = "";
+  
+  // Limpiar luces si se cierra el juego abruptamente
+  slotReels.forEach(reel => reel.classList.remove("jackpot-flash"));
 }
 
 async function spinSlots() {
@@ -118,6 +177,9 @@ async function spinSlots() {
   spinSlotsButton.disabled = true;
   slotsMessage.textContent = "Girando...";
 
+  playSlotSound("grid"); // Nota: Si tu clave en el objeto es "girar", cámbialo a playSlotSound("girar")
+  playSlotSound("girar");
+
   slotsLever.classList.add("pulled");
 
   slotReels.forEach((reel, index) => {
@@ -141,14 +203,53 @@ async function spinSlots() {
   const prize = getSlotsPrize(bet, result);
 
   if (prize > 0) {
-    window.casino.addChips(prize);
-    slotsMessage.textContent = `Ganaste ${prize} fichas.`;
+    const currentChips = window.casino.getChips ? window.casino.getChips() : 0;
+    const finalChips = currentChips + prize;
+    
+    let soundDuration = 2.0; 
+    const multiplier = prize / bet;
+
+    if (multiplier === 50) {
+      soundDuration = 5.5; 
+      playSlotSound("premiox50");
+      
+      // NUEVO: Activamos el efecto de destellos en los 3 rodillos al sacar el Jackpot
+      slotReels.forEach(reel => reel.classList.add("jackpot-flash"));
+      
+    } else if (multiplier === 5) {
+      soundDuration = 3.0; 
+      playSlotSound("premiox5"); 
+    } else if (multiplier === 2) {
+      soundDuration = 1.8; 
+      playSlotSound("premiox2");
+    }
+
+    animateChipsCounter(
+      currentChips,
+      finalChips,
+      soundDuration,
+      (animatedValue) => {
+        slotsMessage.textContent = `¡Premio! Sumando fichas: ${animatedValue - currentChips}`;
+      },
+      () => {
+        window.casino.addChips(prize);
+        slotsMessage.textContent = `Ganaste ${prize} fichas.`;
+        
+        // NUEVO: Apagamos los destellos cuando el premio termina de sumarse
+        slotReels.forEach(reel => reel.classList.remove("jackpot-flash"));
+        
+        slotsSpinning = false;
+        spinSlotsButton.disabled = false;
+      }
+    );
+
   } else {
     slotsMessage.textContent = "Nada esta vez...";
+    playSlotSound("perder");
+    
+    slotsSpinning = false;
+    spinSlotsButton.disabled = false;
   }
-
-  slotsSpinning = false;
-  spinSlotsButton.disabled = false;
 }
 
 openSlotsButton.addEventListener("click", openSlots);
@@ -158,20 +259,15 @@ spinSlotsButton.addEventListener("click", spinSlots);
 function createSlotResult() {
   const roll = Math.random();
 
-  // 1. Jackpot x50: 2% de probabilidad (0.00 a 0.02)
   if (roll < 0.02) {
     return ["7️⃣", "7️⃣", "7️⃣"];
   }
-
-  // 2. Tres iguales x5: 15% de probabilidad (0.02 a 0.17)
-  else if (roll < 0.17) {
+  else if (roll < 0.12) {
     const symbols = ["🍋", "🍒", "🔔", "💎", "⭐"];
     const symbol = symbols[Math.floor(Math.random() * symbols.length)];
     return [symbol, symbol, symbol];
   }
-
-  // 3. Dos iguales x2: 30% de probabilidad (0.17 a 0.47)
-  else if (roll < 0.47) {
+  else if (roll < 0.35) {
     const pairSymbols = ["🍋", "🍒", "🔔", "💎", "⭐"];
     const pairSymbol = pairSymbols[Math.floor(Math.random() * pairSymbols.length)];
 
@@ -191,7 +287,6 @@ function createSlotResult() {
     return result;
   }
 
-  // 4. Perder: 53% de probabilidad restante (0.47 a 1.00)
   return createLosingResult();
 }
 

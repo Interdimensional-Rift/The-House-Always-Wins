@@ -1,3 +1,6 @@
+﻿/* ==========================================================================
+   1. VARIABLES Y CONFIGURACIÓN GLOBAL (:root & @property)
+   ========================================================================== */
 @property --vignette-hole {
   syntax: "<percentage>";
   inherits: false;
@@ -10,10 +13,26 @@
   initial-value: 0%;
 }
 
-/* ------------------------------
-   BASE
------------------------------- */
+:root {
+  /* Paleta de colores principal */
+  --primary-orange: #ff9f1c;
+  --primary-gold: #ffcc66;
+  --light-gold: #fff0b8;
+  --bg-dark-rgba: rgba(0, 0, 0, 0.78);
+  --bg-card-rgba: rgba(0, 0, 0, 0.76);
+  --border-glow: rgba(255, 159, 28, 0.8);
+  
+  /* Dimensiones y físicas */
+  --dice-size: 56px;
+  --chip-size: 30px;
+  --border-radius-md: 8px;
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+}
 
+/* ==========================================================================
+   2. RESET Y ESTILOS BASE
+   ========================================================================== */
 html,
 body {
   margin: 0;
@@ -24,10 +43,7 @@ body {
   background:
     radial-gradient(circle at center, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, 0.8) 75%),
     linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)),
-    url("imagenes/fondo-salon-juegos.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+    url("imagenes/fondo-salon-juegos.png") no-repeat center center / cover;
 }
 
 body::before {
@@ -38,36 +54,42 @@ body::before {
   pointer-events: none;
   --vignette-hole: 4%;
   --vignette-edge: 35%;
-  background:
-    radial-gradient(
-      circle at center,
-      transparent var(--vignette-hole),
-      rgba(0, 0, 0, 0.98) var(--vignette-edge),
-      rgba(0, 0, 0, 1) 100%
-    );
-  transition:
-    --vignette-hole 1.8s ease,
-    --vignette-edge 1.8s ease;
+  background: radial-gradient(
+    circle at center,
+    transparent var(--vignette-hole),
+    rgba(0, 0, 0, 0.98) var(--vignette-edge),
+    rgba(0, 0, 0, 1) 100%
+  );
+  transition: --vignette-hole 1.8s ease, --vignette-edge 1.8s ease;
 }
 
-body.vignette-tight::before {
-  --vignette-hole: 1%;
-  --vignette-edge: 10%;
-}
-
-body.vignette-open::before {
-  --vignette-hole: 50%;
-  --vignette-edge: 100%;
-}
+body.vignette-tight::before { --vignette-hole: 1%; --vignette-edge: 10%; }
+body.vignette-open::before { --vignette-hole: 50%; --vignette-edge: 100%; }
 
 button {
   font: inherit;
+  cursor: pointer;
+  border: 1px solid var(--primary-orange);
+  border-radius: var(--border-radius-md);
+  background: rgba(0, 0, 0, 0.78);
+  color: var(--primary-gold);
+  font-weight: bold;
+  transition: background var(--transition-fast), color var(--transition-fast);
 }
 
-/* ------------------------------
-   CAPAS
------------------------------- */
+button:hover:not(:disabled) {
+  background: var(--primary-orange);
+  color: #000;
+}
 
+button:disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   3. ESTRUCTURA DE CAPAS Y PANELES (Layout)
+   ========================================================================== */
 #game-container {
   position: fixed;
   inset: 0;
@@ -95,26 +117,18 @@ button {
   transition: background 2.5s ease;
 }
 
-.deal-scene.revealing {
-  background: rgba(0, 0, 0, 0);
-}
+.deal-scene.revealing { background: rgba(0, 0, 0, 0); }
 
 .deal-dialogue,
-.deal-buttons,
-.deal-buttons button,
 .game-options,
-.game-options button,
 .explore-panel,
-.explore-panel button,
-.games-panel,
-.games-panel button {
+.games-panel {
   pointer-events: auto;
 }
 
-/* ------------------------------
-   CARTAS Y FICHAS
------------------------------- */
-
+/* ==========================================================================
+   4. COMPONENTES COMUNES (Fichas, Cartas, Diálogos)
+   ========================================================================== */
 .card,
 .chip {
   position: absolute;
@@ -124,10 +138,7 @@ button {
   will-change: transform, top, left;
 }
 
-.card {
-  pointer-events: none;
-}
-
+.card { pointer-events: none; }
 .chip {
   z-index: 11;
   pointer-events: auto;
@@ -144,44 +155,17 @@ button {
   gap: 8px;
   align-items: center;
   padding: 10px 16px;
-  border: 1px solid #ff9f1c;
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.78);
-  color: #ffcc66;
+  border: 1px solid var(--primary-orange);
+  border-radius: var(--border-radius-md);
+  background: var(--bg-dark-rgba);
+  color: var(--primary-gold);
   font-weight: bold;
-  pointer-events: auto;
   box-shadow: 0 0 24px rgba(0, 0, 0, 0.55);
 }
 
-#chips-count {
-  color: #fff0b8;
-}
+#chips-count { color: var(--light-gold); }
 
-.chip-pop {
-  position: fixed;
-  z-index: 55;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #ffcc66;
-  pointer-events: none;
-  animation: chipPop 0.65s ease-out forwards;
-}
-
-.chip-gain-text {
-  position: fixed;
-  z-index: 56;
-  color: #ffcc66;
-  font-weight: bold;
-  text-shadow: 0 0 10px #000;
-  pointer-events: none;
-  animation: chipGainText 0.8s ease-out forwards;
-}
-
-/* ------------------------------
-   DIALOGO DEL TRATO
------------------------------- */
-
+/* Diálogo Trato */
 .deal-dialogue {
   max-width: 900px;
   padding: 30px;
@@ -198,18 +182,15 @@ button {
 .deal-text {
   min-height: 90px;
   font-size: clamp(2rem, 5vw, 4.8rem);
-  color: #ffcc66;
+  color: var(--primary-gold);
   opacity: 0;
-  text-shadow:
-    0 0 10px rgba(255, 159, 28, 0.8),
-    0 0 28px rgba(201, 72, 13, 0.7);
+  text-shadow: 0 0 10px var(--border-glow), 0 0 28px rgba(201, 72, 13, 0.7);
   transition: opacity 1.8s ease;
   animation: textFloat 5s ease-in-out infinite;
 }
 
-.deal-text.visible {
-  opacity: 1;
-}
+.deal-text.visible,
+.deal-buttons.visible { opacity: 1; }
 
 .deal-buttons {
   display: flex;
@@ -220,30 +201,14 @@ button {
   transition: opacity 1s ease;
 }
 
-.deal-buttons.visible {
-  opacity: 1;
-}
-
 .deal-buttons button {
   padding: 12px 26px;
-  border: 1px solid #ff9f1c;
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.85);
-  color: #ffcc66;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
   animation: buttonFloat 3.8s ease-in-out infinite;
 }
 
-.deal-buttons button:nth-child(2) {
-  animation-delay: 0.7s;
-}
+.deal-buttons button:nth-child(2) { animation-delay: 0.7s; }
 
-/* ------------------------------
-   OPCIONES
------------------------------- */
-
+/* Opciones de Juego */
 .game-options {
   position: fixed;
   left: 50%;
@@ -267,9 +232,9 @@ button {
 
 .game-options p {
   margin-bottom: 18px;
-  color: #ffcc66;
+  color: var(--primary-gold);
   font-size: 1.4rem;
-  text-shadow: 0 0 10px rgba(255, 159, 28, 0.8);
+  text-shadow: 0 0 10px var(--border-glow);
 }
 
 .game-options-buttons,
@@ -284,26 +249,11 @@ button {
 .panel-buttons button,
 .games-back {
   padding: 11px 22px;
-  border: 1px solid #ff9f1c;
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.75);
-  color: #ffcc66;
-  font-weight: bold;
-  cursor: pointer;
 }
 
-.deal-buttons button:hover,
-.game-options-buttons button:hover,
-.panel-buttons button:hover,
-.games-back:hover {
-  background: #ff9f1c;
-  color: #000;
-}
+.games-back { margin-top: 22px; }
 
-/* ------------------------------
-   EXPLORAR Y JUEGOS
------------------------------- */
-
+/* Paneles modales (Explorar y Juegos) */
 .explore-panel,
 .games-panel {
   position: fixed;
@@ -329,15 +279,15 @@ button {
   max-width: 720px;
   padding: 28px;
   border: 1px solid rgba(255, 159, 28, 0.55);
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.78);
+  border-radius: var(--border-radius-md);
+  background: var(--bg-dark-rgba);
   box-shadow: 0 0 44px rgba(0, 0, 0, 0.65);
 }
 
 .character-name,
 .character-dialogue {
-  color: #ffcc66;
-  text-shadow: 0 0 10px rgba(255, 159, 28, 0.8);
+  color: var(--primary-gold);
+  text-shadow: 0 0 10px var(--border-glow);
 }
 
 .character-name {
@@ -352,6 +302,7 @@ button {
   line-height: 1.45;
 }
 
+/* Rejilla de Juegos */
 .games-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -365,16 +316,10 @@ button {
   min-height: 190px;
   padding: 12px;
   border: 1px solid rgba(255, 159, 28, 0.62);
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.76);
-  color: #ffcc66;
-  cursor: pointer;
+  background: var(--bg-card-rgba);
   opacity: 0;
   transform: translateY(22px);
-  transition:
-    opacity 0.8s ease,
-    transform 0.8s ease,
-    background 0.2s ease;
+  transition: opacity 0.8s ease, transform 0.8s ease, background 0.2s ease;
 }
 
 .games-panel.visible .game-card {
@@ -382,21 +327,11 @@ button {
   transform: translateY(0);
 }
 
-.games-panel.visible .game-card:nth-child(2) {
-  transition-delay: 0.12s;
-}
+.games-panel.visible .game-card:nth-child(2) { transition-delay: 0.12s; }
+.games-panel.visible .game-card:nth-child(3) { transition-delay: 0.24s; }
+.games-panel.visible .game-card:nth-child(4) { transition-delay: 0.36s; }
 
-.games-panel.visible .game-card:nth-child(3) {
-  transition-delay: 0.24s;
-}
-
-.games-panel.visible .game-card:nth-child(4) {
-  transition-delay: 0.36s;
-}
-
-.game-card:hover {
-  background: rgba(255, 159, 28, 0.18);
-}
+.game-card:hover { background: rgba(255, 159, 28, 0.18); }
 
 .game-image {
   display: grid;
@@ -406,504 +341,32 @@ button {
   background:
     linear-gradient(135deg, rgba(94, 9, 9, 0.85), rgba(12, 12, 12, 0.95)),
     radial-gradient(circle, rgba(255, 204, 102, 0.25), transparent 60%);
-  color: #fff0b8;
+  color: var(--light-gold);
   font-size: clamp(2.2rem, 5vw, 4.5rem);
   font-weight: 900;
-  text-shadow:
-    0 0 10px rgba(255, 159, 28, 0.85),
-    0 4px 0 rgba(0, 0, 0, 0.45);
+  text-shadow: 0 0 10px rgba(255, 159, 28, 0.85), 0 4px 0 rgba(0, 0, 0, 0.45);
 }
 
 .game-card span {
-  color: #ffcc66;
+  color: var(--primary-gold);
   font-size: 1.05rem;
   font-weight: bold;
   text-shadow: 0 0 10px rgba(255, 159, 28, 0.6);
 }
 
-.games-back {
-  margin-top: 22px;
-}
-
-/* ------------------------------
-   ANIMACIONES
------------------------------- */
-
-@keyframes buttonFloat {
-  0% {
-    transform: translateY(0) rotate(-0.7deg);
-  }
-
-  50% {
-    transform: translateY(-9px) rotate(0.7deg);
-  }
-
-  100% {
-    transform: translateY(0) rotate(-0.7deg);
-  }
-}
-
-@keyframes textFloat {
-  0% {
-    transform: translateY(0) rotate(-0.7deg);
-  }
-
-  50% {
-    transform: translateY(-12px) rotate(0.7deg);
-  }
-
-  100% {
-    transform: translateY(0) rotate(-0.7deg);
-  }
-}
-
-@keyframes chipPop {
-  from {
-    opacity: 1;
-    transform: translate(0, 0) scale(1);
-  }
-
-  to {
-    opacity: 0;
-    transform: translate(var(--pop-x), var(--pop-y)) scale(0.2);
-  }
-}
-
-@keyframes chipGainText {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  to {
-    opacity: 0;
-    transform: translateY(-36px);
-  }
-}
-
-/* ------------------------------
-   RESPONSIVE
------------------------------- */
-
-@media (max-width: 760px) {
-  .game-options {
-    bottom: 28px;
-    width: calc(100% - 24px);
-  }
-
-  .games-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-  }
-}
-
-@media (max-width: 430px) {
-  .games-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .explore-panel {
-    padding: 20px;
-  }
-}
-
-.slots-machine {
-  display: none;
-  width: min(520px, calc(100% - 24px));
-  margin: 0 auto;
-  padding: 20px;
-  border: 2px solid #ff9f1c;
-  border-radius: 8px;
-  background:
-    linear-gradient(145deg, rgba(90, 10, 10, 0.95), rgba(12, 8, 8, 0.96));
-  box-shadow:
-    0 0 30px rgba(0, 0, 0, 0.75),
-    inset 0 0 22px rgba(255, 159, 28, 0.18);
-  text-align: center;
-}
-
-.slots-machine.visible {
-  display: block;
-  animation: slotsFadeIn 0.8s ease forwards;
-}
-
-.slots-top {
-  margin-bottom: 16px;
-  color: #fff0b8;
-  font-size: 2rem;
-  font-weight: 900;
-  text-shadow: 0 0 14px rgba(255, 159, 28, 0.9);
-}
-
-.slots-body {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.slots-reels {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  width: min(360px, 100%);
-  padding: 16px;
-  border: 2px solid #ffcc66;
-  border-radius: 8px;
-  background: #120808;
-}
-
-.slot-reel {
-  display: grid;
-  place-items: center;
-  height: 110px;
-  border: 2px solid rgba(255, 204, 102, 0.7);
-  border-radius: 8px;
-  background: #fff4db;
-  font-size: 3.2rem;
-  overflow: hidden;
-  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.35);
-}
-
-.slot-reel.spinning {
-  animation: reelSpin 0.12s linear infinite;
-}
-
-.slots-lever {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  width: 34px;
-  height: 130px;
-  transform-origin: bottom center; /* Ahora pivota desde abajo, no desde arriba */
-  perspective: 400px;             /* Permite el efecto visual 3D */
-  transition: transform 0.25s ease;
-}
-
-.slots-lever.pulled {
-  transform: rotateX(55deg) scaleY(0.7);
-}
-
-.lever-stick {
-  position: absolute;
-  left: 15px;
-  top: 20px;
-  width: 5px;
-  height: 90px;
-  border-radius: 999px;
-  background: #d8c7a0;
-}
-
-.lever-ball {
-  position: absolute;
-  left: 2px;
-  top: 0;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: #d71920;
-  box-shadow: 0 0 12px rgba(215, 25, 32, 0.75);
-}
-
-.slots-controls {
-  display: flex;
-  justify-content: center;
-  align-items: end;
-  gap: 12px;
-  margin-top: 18px;
-  flex-wrap: wrap;
-}
-
-.slots-controls label {
-  display: grid;
-  gap: 6px;
-  color: #ffcc66;
-  font-weight: bold;
-}
-
-.slots-controls input {
-  width: 90px;
-  padding: 9px 10px;
-  border: 1px solid #ff9f1c;
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff0b8;
-  font-weight: bold;
-  text-align: center;
-}
-
-.slots-controls button {
-  padding: 10px 22px;
-  border: 1px solid #ff9f1c;
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.78);
-  color: #ffcc66;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.slots-controls button:hover {
-  background: #ff9f1c;
-  color: #000;
-}
-
-.slots-message {
-  min-height: 26px;
-  margin: 14px 0 0;
-  color: #ffcc66;
-  font-weight: bold;
-  text-shadow: 0 0 10px rgba(255, 159, 28, 0.8);
-}
-
-@keyframes reelSpin {
-  0% {
-    transform: translateY(-8px);
-    filter: blur(1px);
-  }
-
-  50% {
-    transform: translateY(8px);
-    filter: blur(2px);
-  }
-
-  100% {
-    transform: translateY(-8px);
-    filter: blur(1px);
-  }
-}
-
-@keyframes slotsFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.dice-game {
-  display: none;
-  width: min(620px, calc(100% - 24px));
-  margin: 0 auto;
-  padding: 20px;
-  border: 2px solid #ff9f1c;
-  border-radius: 8px;
-  background:
-    linear-gradient(145deg, rgba(32, 8, 8, 0.96), rgba(8, 8, 8, 0.96));
-  color: #ffcc66;
-  text-align: center;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.75);
-}
-
-.dice-game.visible {
-  display: block;
-  animation: slotsFadeIn 0.8s ease forwards;
-}
-
-.dice-header h2 {
-  margin: 0;
-  color: #fff0b8;
-  font-size: 2rem;
-  text-shadow: 0 0 14px rgba(255, 159, 28, 0.9);
-}
-
-.dice-header p {
-  margin: 6px 0 16px;
-}
-
-.dice-scoreboard {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-bottom: 18px;
-}
-
-.dice-scoreboard div {
-  padding: 10px;
-  border: 1px solid rgba(255, 159, 28, 0.55);
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.55);
-}
-
-.dice-scoreboard span,
-.dice-scoreboard strong {
-  display: block;
-}
-
-.dice-scoreboard strong {
-  margin-top: 4px;
-  color: #fff0b8;
-  font-size: 1.4rem;
-}
-
-.dice-area {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  min-height: 82px;
-  margin-bottom: 14px;
-  flex-wrap: wrap;
-}
-
-.die {
-  display: grid;
-  place-items: center;
-  width: 64px;
-  height: 64px;
-  border: 2px solid #ffcc66;
-  border-radius: 8px;
-  background: #fff4db;
-  color: #111;
-  font-size: 2.4rem;
-  cursor: pointer;
-  user-select: none;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.die:hover {
-  transform: translateY(-4px);
-}
-
-.die.selected {
-  box-shadow:
-    0 0 0 4px rgba(255, 159, 28, 0.45),
-    0 0 18px rgba(255, 159, 28, 0.8);
-  transform: translateY(-6px);
-}
-
-.die.disabled {
-  opacity: 0.5;
-  pointer-events: none;
-}
-
-.dice-message {
-  min-height: 28px;
-  color: #ffcc66;
-  font-weight: bold;
-  text-shadow: 0 0 10px rgba(255, 159, 28, 0.8);
-}
-
-.dice-controls {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.dice-controls button {
-  padding: 10px 18px;
-  border: 1px solid #ff9f1c;
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.78);
-  color: #ffcc66;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.dice-controls button:hover:not(:disabled) {
-  background: #ff9f1c;
-  color: #000;
-}
-
-.dice-controls button:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-.game-header {
-  display: flex;
-  justify-content: center;
-  align-items: start;
-  gap: 12px;
-  position: relative;
-}
-
-.help-button {
-  width: 34px;
-  height: 34px;
-  border: 1px solid #ff9f1c;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.78);
-  color: #ffcc66;
-  font-weight: 900;
-  cursor: pointer;
-}
-
-.help-button:hover {
-  background: #ff9f1c;
-  color: #000;
-}
-
-.rules-panel {
-  display: none;
-  margin: 10px auto 16px;
-  max-width: 460px;
-  padding: 12px;
-  border: 1px solid rgba(255, 159, 28, 0.55);
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.78);
-  color: #ffcc66;
-  text-align: left;
-}
-
-.rules-panel.visible {
-  display: block;
-}
-
-.rules-panel p {
-  margin: 6px 0;
-}
-
-.dice-bet-box {
-  display: flex;
-  justify-content: center;
-  align-items: end;
-  gap: 12px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-}
-
-.dice-bet-box label {
-  display: grid;
-  gap: 6px;
-  color: #ffcc66;
-  font-weight: bold;
-}
-
-.dice-bet-box input {
-  width: 90px;
-  padding: 9px 10px;
-  border: 1px solid #ff9f1c;
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff0b8;
-  font-weight: bold;
-  text-align: center;
-}
-
-.dice-bet-box button {
-  padding: 10px 18px;
-  border: 1px solid #ff9f1c;
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.78);
-  color: #ffcc66;
-  font-weight: bold;
-  cursor: pointer;
-}
-
+/* ==========================================================================
+   5. MÓDULO: SLOTS 777 & DADOS (Contenedores Comunes)
+   ========================================================================== */
 .slots-machine,
 .dice-game {
   display: none;
   width: min(620px, calc(100% - 24px));
   margin: 0 auto;
   padding: 20px;
-  border: 2px solid #ff9f1c;
-  border-radius: 8px;
+  border: 2px solid var(--primary-orange);
+  border-radius: var(--border-radius-md);
   background: linear-gradient(145deg, rgba(55, 8, 8, 0.96), rgba(8, 8, 8, 0.96));
-  color: #ffcc66;
+  color: var(--primary-gold);
   text-align: center;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.75);
 }
@@ -924,20 +387,8 @@ button {
 .help-button {
   width: 34px;
   height: 34px;
-  border: 1px solid #ff9f1c;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.78);
-  color: #ffcc66;
   font-weight: 900;
-  cursor: pointer;
-}
-
-.help-button:hover,
-.slots-controls button:hover,
-.dice-bet-box button:hover,
-.dice-controls button:hover:not(:disabled) {
-  background: #ff9f1c;
-  color: #000;
 }
 
 .rules-panel {
@@ -946,29 +397,67 @@ button {
   max-width: 460px;
   padding: 12px;
   border: 1px solid rgba(255, 159, 28, 0.55);
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.78);
-  color: #ffcc66;
+  border-radius: var(--border-radius-md);
+  background: var(--bg-dark-rgba);
   text-align: left;
 }
 
-.rules-panel.visible {
-  display: block;
-}
-
-.rules-panel p {
-  margin: 6px 0;
-}
+.rules-panel.visible { display: block; }
+.rules-panel p { margin: 6px 0; }
 
 .slots-top,
 .dice-header h2 {
   margin: 0 0 16px;
-  color: #fff0b8;
+  color: var(--light-gold);
   font-size: 2rem;
   font-weight: 900;
   text-shadow: 0 0 14px rgba(255, 159, 28, 0.9);
 }
 
+.slots-controls,
+.dice-bet-box,
+.dice-controls {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  gap: 12px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+
+.slots-controls label,
+.dice-bet-box label {
+  display: grid;
+  gap: 6px;
+  font-weight: bold;
+}
+
+.slots-controls input,
+.dice-bet-box input {
+  width: 90px;
+  padding: 9px 10px;
+  border: 1px solid var(--primary-orange);
+  border-radius: var(--border-radius-md);
+  background: rgba(0, 0, 0, 0.8);
+  color: var(--light-gold);
+  font-weight: bold;
+  text-align: center;
+}
+
+.slots-controls button,
+.dice-bet-box button,
+.dice-controls button { padding: 10px 18px; }
+
+.slots-message,
+.dice-message {
+  min-height: 28px;
+  font-weight: bold;
+  text-shadow: 0 0 10px var(--border-glow);
+}
+
+/* ==========================================================================
+   6. ESPECÍFICO: SLOTS 777
+   ========================================================================== */
 .slots-body {
   position: relative;
   display: flex;
@@ -982,8 +471,8 @@ button {
   gap: 12px;
   width: min(360px, 100%);
   padding: 16px;
-  border: 2px solid #ffcc66;
-  border-radius: 8px;
+  border: 2px solid var(--primary-gold);
+  border-radius: var(--border-radius-md);
   background: #120808;
 }
 
@@ -992,14 +481,33 @@ button {
   place-items: center;
   height: 110px;
   border: 2px solid rgba(255, 204, 102, 0.7);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   background: #fff4db;
   font-size: 3.2rem;
   overflow: hidden;
 }
 
-.slot-reel.spinning {
-  animation: reelSpin 0.12s linear infinite;
+.slot-reel.spinning { animation: reelSpin 0.12s linear infinite; }
+
+.slot-reel.jackpot-flash {
+  animation: jackpotFlash 0.75s ease-in-out infinite alternate;
+  border-color: #ffd700;
+  background: radial-gradient(circle at center, #fff8d0 0%, #fff2a8 45%, #ffe281 100%);
+}
+
+@keyframes jackpotFlash {
+  0% {
+    box-shadow: 0 0 12px 2px rgba(255, 223, 88, 0.55);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 30px 10px rgba(255, 223, 88, 0.95);
+    transform: scale(1.03);
+  }
+  100% {
+    box-shadow: 0 0 16px 4px rgba(255, 223, 88, 0.7);
+    transform: scale(1);
+  }
 }
 
 .slots-lever {
@@ -1012,9 +520,7 @@ button {
   transition: transform 0.25s ease;
 }
 
-.slots-lever.pulled {
-  transform: rotateX(55deg) scaleY(0.7);
-}
+.slots-lever.pulled { transform: rotateX(55deg) scaleY(0.7); }
 
 .lever-stick {
   position: absolute;
@@ -1037,57 +543,9 @@ button {
   box-shadow: 0 0 12px rgba(215, 25, 32, 0.75);
 }
 
-.slots-controls,
-.dice-bet-box,
-.dice-controls {
-  display: flex;
-  justify-content: center;
-  align-items: end;
-  gap: 12px;
-  margin-top: 18px;
-  flex-wrap: wrap;
-}
-
-.slots-controls label,
-.dice-bet-box label {
-  display: grid;
-  gap: 6px;
-  color: #ffcc66;
-  font-weight: bold;
-}
-
-.slots-controls input,
-.dice-bet-box input {
-  width: 90px;
-  padding: 9px 10px;
-  border: 1px solid #ff9f1c;
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff0b8;
-  font-weight: bold;
-  text-align: center;
-}
-
-.slots-controls button,
-.dice-bet-box button,
-.dice-controls button {
-  padding: 10px 18px;
-  border: 1px solid #ff9f1c;
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.78);
-  color: #ffcc66;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.slots-message,
-.dice-message {
-  min-height: 28px;
-  color: #ffcc66;
-  font-weight: bold;
-  text-shadow: 0 0 10px rgba(255, 159, 28, 0.8);
-}
-
+/* ==========================================================================
+   7. ESPECÍFICO: JUEGO DE DADOS Y FÍSICAS DE CAÍDA
+   ========================================================================== */
 .dice-scoreboard {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1098,60 +556,117 @@ button {
 .dice-scoreboard div {
   padding: 10px;
   border: 1px solid rgba(255, 159, 28, 0.55);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   background: rgba(0, 0, 0, 0.55);
 }
 
 .dice-scoreboard span,
-.dice-scoreboard strong {
-  display: block;
-}
-
+.dice-scoreboard strong { display: block; }
 .dice-scoreboard strong {
   margin-top: 4px;
-  color: #fff0b8;
+  color: var(--light-gold);
   font-size: 1.4rem;
 }
 
-.dice-area {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  min-height: 82px;
-  margin-bottom: 14px;
-  flex-wrap: wrap;
+/* Contenedor relativo obligado para que los dados caigan con coordenadas X/Y */
+#dice-area {
+  position: relative;
+  width: 100%;
+  min-height: 220px;
+  background: radial-gradient(circle, #2a4d34 0%, #1a3322 100%);
+  border: 2px solid rgba(255, 159, 28, 0.4);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.8);
+  margin: 1rem 0;
 }
 
+/* Dado individual absoluto para simular físicas en la mesa */
 .die {
-  display: grid;
-  place-items: center;
-  width: 64px;
-  height: 64px;
-  border: 2px solid #ffcc66;
-  border-radius: 8px;
+  position: absolute;
+  width: var(--dice-size);
+  height: var(--dice-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: #fff4db;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 2.2rem;
   color: #111;
-  font-size: 2.4rem;
   cursor: pointer;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.4);
   user-select: none;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  animation: none;
 }
 
-.die:hover {
-  transform: translateY(-4px);
-}
+.die:hover { transform: translateY(-4px) scale(1.05); }
 
 .die.selected {
-  box-shadow:
-    0 0 0 4px rgba(255, 159, 28, 0.45),
-    0 0 18px rgba(255, 159, 28, 0.8);
-  transform: translateY(-6px);
+  border: 3px solid var(--primary-orange);
+  box-shadow: 0 0 0 4px rgba(255, 159, 28, 0.45), 0 0 18px rgba(255, 159, 28, 0.8);
+  transform: translateY(-6px) scale(1.08) !important;
 }
 
-.die.disabled,
-.dice-controls button:disabled {
-  opacity: 0.45;
+.die.disabled {
+  opacity: 0.6;
   pointer-events: none;
+}
+
+/* Fichas visuales animadas tras ganar partida */
+.casino-chip {
+  position: fixed;
+  width: var(--chip-size);
+  height: var(--chip-size);
+  background: repeating-conic-gradient(#e74c3c 0% 25%, #ffffff 25% 50%);
+  border-radius: 50%;
+  border: 3px solid #f1c40f;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  pointer-events: none;
+  transition: all 0.8s cubic-bezier(0.5, 0, 0.2, 1);
+}
+
+
+/* Estado base: sin animaciones */
+.die {
+  transition: transform 0.2s ease; /* Solo suavizado de interacción */
+}
+
+/* Solo se aplica cuando el dado está en fase de "rodar" */
+.die.is-rolling {
+  animation: rollIn 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards;
+}
+
+/* Estado de selección */
+.die.selected {
+  border: 3px solid var(--primary-orange);
+  transform: translateY(-6px) scale(1.08);
+}
+
+
+/* ==========================================================================
+   8. ANIMACIONES (@keyframes)
+   ========================================================================== */
+@keyframes buttonFloat {
+  0%, 100% { transform: translateY(0) rotate(-0.7deg); }
+  50% { transform: translateY(-9px) rotate(0.7deg); }
+}
+
+@keyframes textFloat {
+  0%, 100% { transform: translateY(0) rotate(-0.7deg); }
+  50% { transform: translateY(-12px) rotate(0.7deg); }
+}
+
+@keyframes chipPop {
+  from { opacity: 1; transform: translate(0, 0) scale(1); }
+  to { opacity: 0; transform: translate(var(--pop-x), var(--pop-y)) scale(0.2); }
+}
+
+@keyframes chipGainText {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-36px); }
 }
 
 @keyframes reelSpin {
@@ -1163,4 +678,33 @@ button {
 @keyframes gameFadeIn {
   from { opacity: 0; transform: translateY(18px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes rollIn {
+  0% { opacity: 0; transform: scale(0.2) rotate(-360deg) translate(-100px, -100px); }
+  70% { transform: scale(1.1) rotate(10deg); }
+  100% { opacity: 1; transform: scale(1) rotate(var(--final-rot, 0deg)); }
+}
+
+/* ==========================================================================
+   9. DISEÑO RESPONSIVO (Media Queries)
+   ========================================================================== */
+@media (max-width: 760px) {
+  .game-options {
+    bottom: 28px;
+    width: calc(100% - 24px);
+  }
+
+  .games-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  #dice-area { min-height: 260px; }
+}
+
+@media (max-width: 430px) {
+  .games-grid { grid-template-columns: 1fr; }
+  .explore-panel { padding: 20px; }
+  :root { --dice-size: 48px; }
 }

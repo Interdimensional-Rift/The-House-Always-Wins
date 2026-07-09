@@ -120,19 +120,19 @@ const cards = [
   "imagenes/Club_Cards/ClubCard-J.png",
   "imagenes/Club_Cards/ClubCard-Q.png",
   "imagenes/Club_Cards/ClubCard-K.png",
-  "imagenes/Heart_Cards/HeartCard-A.png",
-  "imagenes/Heart_Cards/HeartCard-2.png",
-  "imagenes/Heart_Cards/HeartCard-3.png",
-  "imagenes/Heart_Cards/HeartCard-4.png",
-  "imagenes/Heart_Cards/HeartCard-5.png",
-  "imagenes/Heart_Cards/HeartCard-6.png",
-  "imagenes/Heart_Cards/HeartCard-7.png",
-  "imagenes/Heart_Cards/HeartCard-8.png",
-  "imagenes/Heart_Cards/HeartCard-9.png",
-  "imagenes/Heart_Cards/HeartCard-10.png",
-  "imagenes/Heart_Cards/HeartCard-J.png",
-  "imagenes/Heart_Cards/HeartCard-Q.png",
-  "imagenes/Heart_Cards/HeartCard-K.png"
+  "imagenes/Heart_Cards/HeartsCard-A.png",
+  "imagenes/Heart_Cards/HeartsCard-2.png",
+  "imagenes/Heart_Cards/HeartsCard-3.png",
+  "imagenes/Heart_Cards/HeartsCard-4.png",
+  "imagenes/Heart_Cards/HeartsCard-5.png",
+  "imagenes/Heart_Cards/HeartsCard-6.png",
+  "imagenes/Heart_Cards/HeartsCard-7.png",
+  "imagenes/Heart_Cards/HeartsCard-8.png",
+  "imagenes/Heart_Cards/HeartsCard-9.png",
+  "imagenes/Heart_Cards/HeartsCard-10.png",
+  "imagenes/Heart_Cards/HeartsCard-J.png",
+  "imagenes/Heart_Cards/HeartsCard-Q.png",
+  "imagenes/Heart_Cards/HeartsCard-K.png"
 ];
 
 function createCard() {
