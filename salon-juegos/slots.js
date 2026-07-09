@@ -158,20 +158,20 @@ spinSlotsButton.addEventListener("click", spinSlots);
 function createSlotResult() {
   const roll = Math.random();
 
-  // Muy raro: jackpot x50
+  // 1. Jackpot x50: 2% de probabilidad (0.00 a 0.02)
   if (roll < 0.02) {
     return ["7️⃣", "7️⃣", "7️⃣"];
   }
 
-  // Raro: tres iguales x5
-  if (roll < 0.02) {
+  // 2. Tres iguales x5: 15% de probabilidad (0.02 a 0.17)
+  else if (roll < 0.17) {
     const symbols = ["🍋", "🍒", "🔔", "💎", "⭐"];
     const symbol = symbols[Math.floor(Math.random() * symbols.length)];
     return [symbol, symbol, symbol];
   }
 
-  // Poco común: dos iguales x1
-  if (roll < 0.12) {
+  // 3. Dos iguales x2: 30% de probabilidad (0.17 a 0.47)
+  else if (roll < 0.47) {
     const pairSymbols = ["🍋", "🍒", "🔔", "💎", "⭐"];
     const pairSymbol = pairSymbols[Math.floor(Math.random() * pairSymbols.length)];
 
@@ -191,7 +191,7 @@ function createSlotResult() {
     return result;
   }
 
-  // Casi siempre: tres diferentes
+  // 4. Perder: 53% de probabilidad restante (0.47 a 1.00)
   return createLosingResult();
 }
 
