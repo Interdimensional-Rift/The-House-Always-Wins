@@ -1,258 +1,511 @@
-
-
 /* Viñeteado oscuro */
+
 body::before {
+
   content: '';
+
   position: fixed;
+
   inset: 0;
+
   pointer-events: none;
+
+
 
   background:
+
     radial-gradient(
+
       circle at center,
+
       transparent 50%,
+
       rgba(0, 0, 0, 0.9) 100%
+
     );
 
+
+
   z-index: 1;
+
 }
 
+
+
 /* Contenedor de cartas */
+
 #game-container {
+
   position: fixed;
+
   inset: 0;
+
   overflow: hidden;
+
   pointer-events: none;
+
   z-index: 2;
+
 }
+
+
+
 
 
 /* Cartas */
+
 .card {
+
   position: absolute;
+
   top: 0;
 
+
+
   background-size: contain;
+
   background-repeat: no-repeat;
+
   background-position: center;
+
+
 
   filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6));
+
   will-change: transform, top;
+
 }
+
+
 
 body {
+
     margin: 0;
+
     background: #0a0a0a;
+
     color: #fff;
+
     font-family: 'Merriweather', serif;
+
      }
 
+
+
      #game-container {
+
             position: fixed;
+
             top: 0;
+
             left: 0;
+
             width: 100%;
+
             height: 100%;
+
             pointer-events: none; /* Para que no interfiera con clicks */
+
             z-index: 1;
+
         }
+
+
 
         /* Intro Parallax */
+
         .intro-section {
+
             display: flex;
+
             justify-content: center;
+
             align-items: center;
+
             padding: 60px 20px;
+
             background: rgba(0,0,0,0.8);
+
             z-index: 2;
+
             position: relative;
+
         }
+
+
 
         .intro-box {
+
             max-width: 800px;
+
             padding: 30px;
+
             border: 2px solid #ff9f1c;
+
             border-radius: 15px;
+
             background: rgba(10,10,10,0.9);
+
             text-align: center;
+
             font-size: 1.2rem;
+
         }
+
+
 
         .intro-box p {
+
             margin-bottom: 20px;
+
             color: #ffffff;
+
         }
+
+
 
         #play-music {
+
             padding: 10px 20px;
+
             background: #ff9f1c;
+
             border: none;
+
             border-radius: 10px;
+
             color: #000;
+
             font-weight: bold;
+
             cursor: pointer;
+
         }
+
+
 
         #play-music:hover {
+
             background: #ffb84d;
+
         }
+
+
 
         /* Capítulo Secreto */
+
         .secret-section {
+
             padding: 50px 20px;
+
             max-width: 1000px;
+
             margin: auto;
+
             line-height: 1.8;
+
             position: relative;
+
             z-index: 2;
+
         }
+
+
 
         .secret-section h2 {
+
             text-align: center;
+
             color: #c9480d;
+
             text-shadow: 0 0 10px #ff9f1c;
+
             margin-bottom: 30px;
+
         }
+
+
 
         .secret-section p {
+
             margin-bottom: 20px;
+
             color: rgb(228, 196, 17);
+
             background-color: #00000088;
+
         }
+
+
 
         /* Botones de música principal */
+
         .music-controls {
+
             position: fixed;
+
             top: 10px;
+
             right: 10px;
+
             z-index: 3;
+
         }
+
+
 
         .music-controls button {
+
             margin-left: 5px;
+
             padding: 5px 10px;
+
             border-radius: 5px;
+
             border: none;
+
             font-weight: bold;
+
             cursor: pointer;
+
             background: #ff9f1c;
+
             color: #000;
+
         }
+
+
 
         .music-controls button:hover {
+
             background: #ffb84d;
+
         }
 
+
+
        html, body {
+
   margin: 0;
+
   padding: 0;
+
   width: 100%;
+
   height: 100%;
+
   overflow-x: hidden; /* solo bloquear scroll horizontal */
+
   overflow-y: auto;   /* permitir scroll vertical */
 
+
+
   background:
+
     radial-gradient(
+
       circle at center,
+
       rgba(0,0,0,0) 70%,
+
       rgba(0,0,0,0.8) 75%
+
     ),
+
     linear-gradient(
+
       rgba(0,0,0,0.2),
+
       rgba(0,0,0,0.5)
+
     ),
+
     url("imagenes/casino-bg.png");
 
+
+
   background-size: cover;
+
   background-position: center;
+
   background-repeat: no-repeat;
+
 }
+
+
+
 
 
 .breach-link {
+
     color: #ffffff;
+
   text-decoration: none; /* Elimina el subrayado por defecto */
+
   transition: text-shadow 0.3s ease; /* Suaviza la aparición del brillo */
+
 }
+
+
 
 .breach-link:hover {
+
   /* El "brillo": primer 0 (X), segundo 0 (Y), 6px (difuminado), color (naranja) */
+
   text-shadow: 0 0 6px rgba(255, 188, 95, 0.7);
+
 }
+
+
 
 #odds-controls {
+
   position: fixed;
+
   bottom: 20px;
+
   right: 20px;
+
   z-index: 4;
 
+
+
   display: flex;
+
   gap: 15px;
 
+
+
   background: rgba(0,0,0,0.6);
+
   padding: 15px 20px;
+
   border-radius: 12px;
+
   border: 1px solid #ff9f1c;
+
   backdrop-filter: blur(4px);
+
 }
+
+
 
 #odds-controls label {
+
   display: flex;
+
   flex-direction: column;
+
   font-size: 0.8rem;
+
   color: #ffcc66;
+
 }
+
+
 
 #odds-controls input[type="range"] {
+
   width: 120px;
+
 }
+
+
 
 /* Numeros Bonito */
+
 #odds-controls span {
+
   font-weight: bold;
+
   color: #ff9f1c;
+
   margin-left: 5px;
+
 }
+
+
 
 /* Para que no quede mal */
+
 #odds-controls input[type="number"] {
+
   width: 60px;
+
   margin-bottom: 5px;
+
   background: #111;
+
   border: 1px solid #ff9f1c;
+
   color: #ffcc66;
+
   border-radius: 5px;
+
   padding: 3px;
+
 }
+
+
 
 /* Entrada oculta al salón de juegos */
+
 .game-room-secret {
+
   position: absolute;
+
   top: 18px;
+
   right: 18px;
+
   width: 70px;
+
   height: 70px;
+
   z-index: 5;
 
+
+
   opacity: 0.16;
+
   cursor: pointer;
+
   transition: opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease;
+
 }
+
+
 
 .game-room-secret img {
+
   width: 100%;
+
   height: 100%;
+
   object-fit: contain;
+
   display: block;
 
+
+
   filter: drop-shadow(0 0 8px rgba(255, 159, 28, 0.25));
+
 }
+
+
 
 .game-room-secret:hover {
+
   opacity: 0.75;
+
   transform: scale(1.08);
+
 }
 
+
+
 .game-room-secret:active {
+
   transform: scale(0.96);
+
 }
