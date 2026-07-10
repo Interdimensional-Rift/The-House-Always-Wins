@@ -135,11 +135,11 @@ function createCard() {
 
 const chips = [];
 const chipImages = [
-    "imagenes/chips/Chip-Rojo.png",
-    "imagenes/chips/Chip-Azul.png",
-    "imagenes/chips/Chip-Amarillo.png",
-    "imagenes/chips/Chip-Verde.png",
-    "imagenes/chips/Chip-Negro.png",
+    "imagenes/chips/Chip-Rojo1.png",
+    "imagenes/chips/Chip-Azul1.png",
+    "imagenes/chips/Chip-Amarillo1.png",
+    "imagenes/chips/Chip-Verde1.png",
+    "imagenes/chips/Chip-Negro1.png",
 ];
 
 function createChip() {

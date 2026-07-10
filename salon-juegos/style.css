@@ -14,15 +14,12 @@
 }
 
 :root {
-  /* Paleta de colores principal */
   --primary-orange: #ff9f1c;
   --primary-gold: #ffcc66;
   --light-gold: #fff0b8;
   --bg-dark-rgba: rgba(0, 0, 0, 0.78);
   --bg-card-rgba: rgba(0, 0, 0, 0.76);
   --border-glow: rgba(255, 159, 28, 0.8);
-  
-  /* Dimensiones y físicas */
   --dice-size: 56px;
   --chip-size: 30px;
   --border-radius-md: 8px;
@@ -127,45 +124,8 @@ button:disabled {
 }
 
 /* ==========================================================================
-   4. COMPONENTES COMUNES (Fichas, Cartas, Diálogos)
+   4. COMPONENTES COMUNES DE LA INTERFAZ
    ========================================================================== */
-.card,
-.chip {
-  position: absolute;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  will-change: transform, top, left;
-}
-
-.card { pointer-events: none; }
-.chip {
-  z-index: 11;
-  pointer-events: auto;
-  cursor: pointer;
-  filter: drop-shadow(0 0 8px rgba(255, 204, 102, 0.45));
-}
-
-#chip-counter {
-  position: fixed;
-  top: 18px;
-  right: 18px;
-  z-index: 60;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  padding: 10px 16px;
-  border: 1px solid var(--primary-orange);
-  border-radius: var(--border-radius-md);
-  background: var(--bg-dark-rgba);
-  color: var(--primary-gold);
-  font-weight: bold;
-  box-shadow: 0 0 24px rgba(0, 0, 0, 0.55);
-}
-
-#chips-count { color: var(--light-gold); }
-
-/* Diálogo Trato */
 .deal-dialogue {
   max-width: 900px;
   padding: 30px;
@@ -208,7 +168,6 @@ button:disabled {
 
 .deal-buttons button:nth-child(2) { animation-delay: 0.7s; }
 
-/* Opciones de Juego */
 .game-options {
   position: fixed;
   left: 50%;
@@ -253,7 +212,6 @@ button:disabled {
 
 .games-back { margin-top: 22px; }
 
-/* Paneles modales (Explorar y Juegos) */
 .explore-panel,
 .games-panel {
   position: fixed;
@@ -302,7 +260,6 @@ button:disabled {
   line-height: 1.45;
 }
 
-/* Rejilla de Juegos */
 .games-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -355,28 +312,8 @@ button:disabled {
 }
 
 /* ==========================================================================
-   5. MÓDULO: SLOTS 777 & DADOS (Contenedores Comunes)
+   5. UI COMPARTIDA DE JUEGOS
    ========================================================================== */
-.slots-machine,
-.dice-game {
-  display: none;
-  width: min(620px, calc(100% - 24px));
-  margin: 0 auto;
-  padding: 20px;
-  border: 2px solid var(--primary-orange);
-  border-radius: var(--border-radius-md);
-  background: linear-gradient(145deg, rgba(55, 8, 8, 0.96), rgba(8, 8, 8, 0.96));
-  color: var(--primary-gold);
-  text-align: center;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.75);
-}
-
-.slots-machine.visible,
-.dice-game.visible {
-  display: block;
-  animation: gameFadeIn 0.7s ease forwards;
-}
-
 .game-header {
   display: flex;
   justify-content: center;
@@ -405,249 +342,8 @@ button:disabled {
 .rules-panel.visible { display: block; }
 .rules-panel p { margin: 6px 0; }
 
-.slots-top,
-.dice-header h2 {
-  margin: 0 0 16px;
-  color: var(--light-gold);
-  font-size: 2rem;
-  font-weight: 900;
-  text-shadow: 0 0 14px rgba(255, 159, 28, 0.9);
-}
-
-.slots-controls,
-.dice-bet-box,
-.dice-controls {
-  display: flex;
-  justify-content: center;
-  align-items: end;
-  gap: 12px;
-  margin-top: 18px;
-  flex-wrap: wrap;
-}
-
-.slots-controls label,
-.dice-bet-box label {
-  display: grid;
-  gap: 6px;
-  font-weight: bold;
-}
-
-.slots-controls input,
-.dice-bet-box input {
-  width: 90px;
-  padding: 9px 10px;
-  border: 1px solid var(--primary-orange);
-  border-radius: var(--border-radius-md);
-  background: rgba(0, 0, 0, 0.8);
-  color: var(--light-gold);
-  font-weight: bold;
-  text-align: center;
-}
-
-.slots-controls button,
-.dice-bet-box button,
-.dice-controls button { padding: 10px 18px; }
-
-.slots-message,
-.dice-message {
-  min-height: 28px;
-  font-weight: bold;
-  text-shadow: 0 0 10px var(--border-glow);
-}
-
 /* ==========================================================================
-   6. ESPECÍFICO: SLOTS 777
-   ========================================================================== */
-.slots-body {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.slots-reels {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  width: min(360px, 100%);
-  padding: 16px;
-  border: 2px solid var(--primary-gold);
-  border-radius: var(--border-radius-md);
-  background: #120808;
-}
-
-.slot-reel {
-  display: grid;
-  place-items: center;
-  height: 110px;
-  border: 2px solid rgba(255, 204, 102, 0.7);
-  border-radius: var(--border-radius-md);
-  background: #fff4db;
-  font-size: 3.2rem;
-  overflow: hidden;
-}
-
-.slot-reel.spinning { animation: reelSpin 0.12s linear infinite; }
-
-.slot-reel.jackpot-flash {
-  animation: jackpotFlash 0.75s ease-in-out infinite alternate;
-  border-color: #ffd700;
-  background: radial-gradient(circle at center, #fff8d0 0%, #fff2a8 45%, #ffe281 100%);
-}
-
-@keyframes jackpotFlash {
-  0% {
-    box-shadow: 0 0 12px 2px rgba(255, 223, 88, 0.55);
-    transform: scale(1);
-  }
-  50% {
-    box-shadow: 0 0 30px 10px rgba(255, 223, 88, 0.95);
-    transform: scale(1.03);
-  }
-  100% {
-    box-shadow: 0 0 16px 4px rgba(255, 223, 88, 0.7);
-    transform: scale(1);
-  }
-}
-
-.slots-lever {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  width: 34px;
-  height: 130px;
-  transform-origin: bottom center;
-  transition: transform 0.25s ease;
-}
-
-.slots-lever.pulled { transform: rotateX(55deg) scaleY(0.7); }
-
-.lever-stick {
-  position: absolute;
-  left: 15px;
-  top: 20px;
-  width: 5px;
-  height: 90px;
-  border-radius: 999px;
-  background: #d8c7a0;
-}
-
-.lever-ball {
-  position: absolute;
-  left: 2px;
-  top: 0;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: #d71920;
-  box-shadow: 0 0 12px rgba(215, 25, 32, 0.75);
-}
-
-/* ==========================================================================
-   7. ESPECÍFICO: JUEGO DE DADOS Y FÍSICAS DE CAÍDA
-   ========================================================================== */
-.dice-scoreboard {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin: 18px 0;
-}
-
-.dice-scoreboard div {
-  padding: 10px;
-  border: 1px solid rgba(255, 159, 28, 0.55);
-  border-radius: var(--border-radius-md);
-  background: rgba(0, 0, 0, 0.55);
-}
-
-.dice-scoreboard span,
-.dice-scoreboard strong { display: block; }
-.dice-scoreboard strong {
-  margin-top: 4px;
-  color: var(--light-gold);
-  font-size: 1.4rem;
-}
-
-/* Contenedor relativo obligado para que los dados caigan con coordenadas X/Y */
-#dice-area {
-  position: relative;
-  width: 100%;
-  min-height: 220px;
-  background: radial-gradient(circle, #2a4d34 0%, #1a3322 100%);
-  border: 2px solid rgba(255, 159, 28, 0.4);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.8);
-  margin: 1rem 0;
-}
-
-/* Dado individual absoluto para simular físicas en la mesa */
-.die {
-  position: absolute;
-  width: var(--dice-size);
-  height: var(--dice-size);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff4db;
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  font-size: 2.2rem;
-  color: #111;
-  cursor: pointer;
-  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.4);
-  user-select: none;
-  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
-  animation: none;
-}
-
-.die:hover { transform: translateY(-4px) scale(1.05); }
-
-.die.selected {
-  border: 3px solid var(--primary-orange);
-  box-shadow: 0 0 0 4px rgba(255, 159, 28, 0.45), 0 0 18px rgba(255, 159, 28, 0.8);
-  transform: translateY(-6px) scale(1.08) !important;
-}
-
-.die.disabled {
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-/* Fichas visuales animadas tras ganar partida */
-.casino-chip {
-  position: fixed;
-  width: var(--chip-size);
-  height: var(--chip-size);
-  background: repeating-conic-gradient(#e74c3c 0% 25%, #ffffff 25% 50%);
-  border-radius: 50%;
-  border: 3px solid #f1c40f;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-  pointer-events: none;
-  transition: all 0.8s cubic-bezier(0.5, 0, 0.2, 1);
-}
-
-
-/* Estado base: sin animaciones */
-.die {
-  transition: transform 0.2s ease; /* Solo suavizado de interacción */
-}
-
-/* Solo se aplica cuando el dado está en fase de "rodar" */
-.die.is-rolling {
-  animation: rollIn 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards;
-}
-
-/* Estado de selección */
-.die.selected {
-  border: 3px solid var(--primary-orange);
-  transform: translateY(-6px) scale(1.08);
-}
-
-
-/* ==========================================================================
-   8. ANIMACIONES (@keyframes)
+   6. ANIMACIONES
    ========================================================================== */
 @keyframes buttonFloat {
   0%, 100% { transform: translateY(0) rotate(-0.7deg); }
@@ -680,14 +376,8 @@ button:disabled {
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes rollIn {
-  0% { opacity: 0; transform: scale(0.2) rotate(-360deg) translate(-100px, -100px); }
-  70% { transform: scale(1.1) rotate(10deg); }
-  100% { opacity: 1; transform: scale(1) rotate(var(--final-rot, 0deg)); }
-}
-
 /* ==========================================================================
-   9. DISEÑO RESPONSIVO (Media Queries)
+   7. DISEÑO RESPONSIVO
    ========================================================================== */
 @media (max-width: 760px) {
   .game-options {
@@ -699,8 +389,6 @@ button:disabled {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
   }
-
-  #dice-area { min-height: 260px; }
 }
 
 @media (max-width: 430px) {
