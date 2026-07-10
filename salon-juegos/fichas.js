@@ -63,21 +63,11 @@ function activateChipMultiplier(multiplier, duration) {
 updateChipCounter();
 
 /* ---------------------------------------
-   DETECCIÓN DE MÓVIL Y CONFIGURACIÓN DINÁMICA
+   CONFIGURACION GENERAL
 --------------------------------------- */
 
-// Detecta si es un dispositivo móvil por el ancho de pantalla o el userAgent
-const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-// Configuración adaptativa según el dispositivo
-const maxCards = isMobile ? 60 : 255;  // Reducido significativamente en móvil
-const maxChips = isMobile ? 30 : 255;  // Reducido significativamente en móvil
-
-const fixedCardsRate = isMobile ? 12 : 35; // Menos cantidad por segundo en móvil
-const fixedChipsRate = isMobile ? 8 : 22;  // Menos cantidad por segundo en móvil
-
-const cardsDelay = 500 - fixedCardsRate * 1.8;
-const chipsDelay = 500 - fixedChipsRate * 1.8;
+const maxCards = 255;
+const maxChips = 255;
 
 let paused = false;
 
@@ -262,9 +252,14 @@ function collectChip(chip) {
 
   addPlayerChips(gainedChips);
   
-  // Optimización móvil: genera menos partículas en la explosión para evitar tirones de FPS
-  const particleCount = isMobile ? 5 : 12;
-  createChipExplosion(rect.left + rect.width / 2, rect.top + rect.height / 2, particleCount);
+  // Calculamos el centro de la ficha
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  createChipExplosion(centerX, centerY);
+  
+  // Nueva llamada para el efecto de partículas con imágenes y sonido
+  chipParticles(centerX, centerY);
   
   showChipGainText(`+${gainedChips}`, rect.left, rect.top);
 
@@ -277,8 +272,58 @@ function collectChip(chip) {
   chip.remove();
 }
 
-function createChipExplosion(x, y, count) {
-  for (let i = 0; i < count; i++) {
+function chipParticles(x, y) {
+  // 1. Reproducir sonido de explosión con pitch y volumen aleatorios
+  const explosionSound = new Audio('sonidos/pop.mp3');
+  
+  // Variación de volumen entre 0.4 y 1.0
+  const randomVolume = 0.3 + Math.random() * 0.3; 
+  explosionSound.volume = randomVolume;
+
+  // Variación de pitch (velocidad de reproducción entre 0.85 y 1.15)
+  // Desactivar preservesPitch permite que el tono cambie al cambiar la velocidad
+  explosionSound.preservesPitch = false; 
+  const randomPitch = 0.85 + Math.random() * 0.3; // Ejemplo: de un 15% más grave a un 15% más agudo
+  explosionSound.playbackRate = randomPitch;
+
+  explosionSound.play().catch(err => console.log("Audio bloqueado por el navegador:", err));
+
+  // 2. Detectar si es móvil para reducir partículas
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  const particleCount = isMobile ? 8 : 16; 
+
+  // 4. Crear las partículas individuales
+  for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElement("div");
+    particle.classList.add("chip-particle-effect");
+
+    // Elegir imagen aleatoria de la lista
+    const randomImage = chipImages[Math.floor(Math.random() * chipImages.length)];
+    particle.style.backgroundImage = `url('${randomImage}')`;
+
+    // Posición inicial (centro de la ficha)
+    particle.style.left = `${x}px`;
+    particle.style.top = `${y}px`;
+
+    // Direcciones y distancias aleatorias para la animación CSS
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 30 + Math.random() * 60;
+    particle.style.setProperty("--move-x", `${Math.cos(angle) * distance}px`);
+    particle.style.setProperty("--move-y", `${Math.sin(angle) * distance}px`);
+
+    document.body.appendChild(particle);
+
+    // Eliminar la partícula después de que termine la animación
+    setTimeout(() => {
+      particle.remove();
+    }, 800);
+  }
+}
+
+
+// Mantenemos tu función original por si la usas para otros efectos visuales
+function createChipExplosion(x, y) {
+  for (let i = 0; i < 12; i++) {
     const miniChip = document.createElement("div");
     miniChip.classList.add("chip-pop");
 
@@ -297,6 +342,7 @@ function createChipExplosion(x, y, count) {
     }, 700);
   }
 }
+
 
 function showChipGainText(text, x, y) {
   const gainText = document.createElement("div");
@@ -336,8 +382,14 @@ function animateChips() {
 }
 
 /* ---------------------------------------
-   BUCLE DE INICIO
+   VALORES FIJOS
 --------------------------------------- */
+
+const fixedCardsRate = 35;
+const fixedChipsRate = 22;
+
+const cardsDelay = 500 - fixedCardsRate * 1.8;
+const chipsDelay = 500 - fixedChipsRate * 1.8;
 
 animateChips();
 

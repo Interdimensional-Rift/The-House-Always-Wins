@@ -23,6 +23,42 @@
     startDiceButton, diceBetInput, diceHelpButton, diceHelp
   ];
 
+  // SOLUCIÓN DEFINITIVA DE RUTA COINCIDENTE
+  function randomFloat(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  // RUTA CORREGIDA: Eliminamos "salon-juegos/" del principio porque ya estás dentro de esa carpeta
+  const AUDIO_PATH = "sonidos/dado-rodando.mp3";
+
+  // Array de canales de audio para poder solapar sonidos si se tira muy rápido
+  const audioPool = Array.from({ length: 3 }, () => {
+    const aud = new Audio(AUDIO_PATH);
+    aud.preload = "auto";
+    return aud;
+  });
+  let poolIndex = 0;
+
+  // Función de reproducción que modifica la velocidad nativa (Pitch) sin romper la seguridad
+  function playRandomPitchAudio() {
+    const currentAudio = audioPool[poolIndex];
+    poolIndex = (poolIndex + 1) % audioPool.length;
+
+    try {
+      currentAudio.currentTime = 0;
+
+      // Variamos la velocidad de reproducción de forma sutil
+      currentAudio.playbackRate = randomFloat(0.85, 1.15);
+
+      currentAudio.play().catch(err => {
+        console.log("El navegador bloqueó el audio temporalmente hasta una interacción:", err);
+      });
+    } catch (e) {
+      console.error("Error al intentar reproducir el audio local:", e);
+    }
+  }
+
+
   // 1. Declaraciones de funciones (Hoisting permite su uso en cualquier parte del archivo)
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -61,6 +97,8 @@ let targetScore = createRandomTargetScore();
       const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
       const data = buffer.getChannelData(0);
       for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+      playRandomPitchAudio();
 
       const noise = this.ctx.createBufferSource();
       noise.buffer = buffer;
@@ -319,6 +357,7 @@ let targetScore = createRandomTargetScore();
   function rollCurrentDice() {
     if (!diceGameStarted || busy) return;
     if (playerTurn) learnFromRiskyRoll();
+  
 
     AudioEngine.playDiceRoll();
     currentRoll = rollDice(diceCount);
@@ -416,6 +455,8 @@ let targetScore = createRandomTargetScore();
     diceMessage.textContent = "Turno del rival...";
     renderScores();
     await wait(900);
+
+    
 
     while (diceGame.classList.contains("visible")) {
       AudioEngine.playDiceRoll();

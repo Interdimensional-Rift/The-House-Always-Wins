@@ -1,0 +1,75 @@
+/* ==========================================================================
+   FICHAS Y CARTAS
+   ========================================================================== */
+.card,
+.chip {
+  position: absolute;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  will-change: transform, top, left;
+}
+
+.card { pointer-events: none; }
+
+.chip {
+  z-index: 11;
+  pointer-events: auto;
+  cursor: pointer;
+  filter: drop-shadow(0 0 8px rgba(255, 204, 102, 0.45));
+}
+
+#chip-counter {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 60;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 16px;
+  border: 1px solid var(--primary-orange);
+  border-radius: var(--border-radius-md);
+  background: var(--bg-dark-rgba);
+  color: var(--primary-gold);
+  font-weight: bold;
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.55);
+}
+
+#chips-count { color: var(--light-gold); }
+
+.casino-chip {
+  position: fixed;
+  width: var(--chip-size);
+  height: var(--chip-size);
+  background: repeating-conic-gradient(#e74c3c 0% 25%, #ffffff 25% 50%);
+  border-radius: 50%;
+  border: 3px solid #f1c40f;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  pointer-events: none;
+  transition: all 0.8s cubic-bezier(0.5, 0, 0.2, 1);
+}
+
+.chip-particle-effect {
+  position: absolute;
+  width: 15px; /* Tamaño pequeño para las partículas */
+  height: 15px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none; /* Evita que el usuario pueda hacerles click */
+  transform: translate(-50%, -50%);
+  animation: explodeParticles 0.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes explodeParticles {
+  0% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--move-x)), calc(-50% + var(--move-y))) scale(0.2) rotate(360deg);
+    opacity: 0;
+  }
+}
