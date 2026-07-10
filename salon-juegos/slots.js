@@ -265,12 +265,12 @@ const openSlotsButton = document.getElementById("open-slots");
           if (roll < 0.02) {
             return ["7️⃣", "7️⃣", "7️⃣"]; // 2% para el jackpot asegurado
           }
-          else if (roll < 0.08) {
+          else if (roll < 0.04) {
             // Usa los pesos reales para determinar el símbolo del triple
             const symbol = randomSlotSymbol();
             return [symbol, symbol, symbol];
           }
-          else if (roll < 0.25) {
+          else if (roll < 0.15) {
             // Usamos randomSlotSymbol() para que la pareja respete la rareza.
             // Esto permite orgánicamente que salgan 2 "7" basándose en su peso.
             const pairSymbol = randomSlotSymbol();
