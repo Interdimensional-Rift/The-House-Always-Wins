@@ -34,59 +34,59 @@ document.addEventListener('visibilitychange', () => {
 
 const cards = [
 
-  'imagenes/Jocker_Cards/JockerCard.png',
+  //'imagenes/Jocker_Cards/JockerCard.png',
 
-  'imagenes/Diamond_Cards/DiamondCard-A.png',
+  //'imagenes/Diamond_Cards/DiamondCard-A.png',
 
-  'imagenes/Diamond_Cards/DiamondCard-2.png',
+  //'imagenes/Diamond_Cards/DiamondCard-2.png',
 
-  'imagenes/Diamond_Cards/DiamondCard-3.png',
+  //'imagenes/Diamond_Cards/DiamondCard-3.png',
 
-  'imagenes/Diamond_Cards/DiamondCard-4.png',
+  //'imagenes/Diamond_Cards/DiamondCard-4.png',
 
-  'imagenes/Diamond_Cards/DiamondCard-5.png',
+  //'imagenes/Diamond_Cards/DiamondCard-5.png',
 
-  'imagenes/Diamond_Cards/DiamondCard-6.png',
+  //'imagenes/Diamond_Cards/DiamondCard-6.png',
 
-  'imagenes/Diamond_Cards/DiamondCard-7.png',
+  //'imagenes/Diamond_Cards/DiamondCard-7.png',
 
-  'imagenes/Diamond_Cards/DiamondCard-8.png',
+  //'imagenes/Diamond_Cards/DiamondCard-8.png',
 
-  'imagenes/Diamond_Cards/DiamondCard-9.png',
+  //'imagenes/Diamond_Cards/DiamondCard-9.png',
 
-  'imagenes/Diamond_Cards/DiamondCard-10.png',
+  //'imagenes/Diamond_Cards/DiamondCard-10.png',
 
-  'imagenes/Diamond_Cards/DiamondCard-J.png',
+  //'imagenes/Diamond_Cards/DiamondCard-J.png',
 
-  'imagenes/Diamond_Cards/DiamondCard-Q.png',
+  //'imagenes/Diamond_Cards/DiamondCard-Q.png',
 
-  'imagenes/Diamond_Cards/DiamondCard-K.png',
+  //'imagenes/Diamond_Cards/DiamondCard-K.png',
 
-  'imagenes/Spade_Cards/SpadeCard-A.png',
+  //'imagenes/Spade_Cards/SpadeCard-A.png',
 
-  'imagenes/Spade_Cards/SpadeCard-2.png',
+  //'imagenes/Spade_Cards/SpadeCard-2.png',
 
-  'imagenes/Spade_Cards/SpadeCard-3.png',
+  //'imagenes/Spade_Cards/SpadeCard-3.png',
 
-  'imagenes/Spade_Cards/SpadeCard-4.png',
+  //'imagenes/Spade_Cards/SpadeCard-4.png',
 
-  'imagenes/Spade_Cards/SpadeCard-5.png',
+  //'imagenes/Spade_Cards/SpadeCard-5.png',
 
-  'imagenes/Spade_Cards/SpadeCard-6.png',
+  //'imagenes/Spade_Cards/SpadeCard-6.png',
 
-  'imagenes/Spade_Cards/SpadeCard-7.png',
+  //'imagenes/Spade_Cards/SpadeCard-7.png',
 
-  'imagenes/Spade_Cards/SpadeCard-8.png',
+  //'imagenes/Spade_Cards/SpadeCard-8.png',
 
-  'imagenes/Spade_Cards/SpadeCard-9.png',
+  //'imagenes/Spade_Cards/SpadeCard-9.png',
 
-  'imagenes/Spade_Cards/SpadeCard-10.png',
+  //'imagenes/Spade_Cards/SpadeCard-10.png',
 
-  'imagenes/Spade_Cards/SpadeCard-J.png',
+  //'imagenes/Spade_Cards/SpadeCard-J.png',
 
-  'imagenes/Spade_Cards/SpadeCard-Q.png',
+  //'imagenes/Spade_Cards/SpadeCard-Q.png',
 
-  'imagenes/Spade_Cards/SpadeCard-K.png',
+  //'imagenes/Spade_Cards/SpadeCard-K.png',
 
   'imagenes/Club_Cards/ClubCard-A.png',
 
@@ -114,31 +114,31 @@ const cards = [
 
   'imagenes/Club_Cards/ClubCard-K.png',
 
-  'imagenes/Heart_Cards/HeartCard-A.png',
+  //'imagenes/Heart_Cards/HeartsCard-A.png',
 
-  'imagenes/Heart_Cards/HeartCard-2.png',
+  //'imagenes/Heart_Cards/HeartsCard-2.png',
 
-  'imagenes/Heart_Cards/HeartCard-3.png',
+  //'imagenes/Heart_Cards/HeartsCard-3.png',
 
-  'imagenes/Heart_Cards/HeartCard-4.png',
+  //'imagenes/Heart_Cards/HeartsCard-4.png',
 
-  'imagenes/Heart_Cards/HeartCard-5.png',
+  //'imagenes/Heart_Cards/HeartsCard-5.png',
 
-  'imagenes/Heart_Cards/HeartCard-6.png',
+  //'imagenes/Heart_Cards/HeartsCard-6.png',
 
-  'imagenes/Heart_Cards/HeartCard-7.png',
+  //'imagenes/Heart_Cards/HeartsCard-7.png',
 
-  'imagenes/Heart_Cards/HeartCard-8.png',
+  //'imagenes/Heart_Cards/HeartsCard-8.png',
 
-  'imagenes/Heart_Cards/HeartCard-9.png',
+  //'imagenes/Heart_Cards/HeartsCard-9.png',
 
-  'imagenes/Heart_Cards/HeartCard-10.png',
+  //'imagenes/Heart_Cards/HeartsCard-10.png',
 
-  'imagenes/Heart_Cards/HeartCard-J.png',
+  //'imagenes/Heart_Cards/HeartsCard-J.png',
 
-  'imagenes/Heart_Cards/HeartCard-Q.png',
+  //'imagenes/Heart_Cards/HeartsCard-Q.png',
 
-  'imagenes/Heart_Cards/HeartCard-K.png'
+  //'imagenes/Heart_Cards/HeartsCard-K.png'
 
 ];
 
