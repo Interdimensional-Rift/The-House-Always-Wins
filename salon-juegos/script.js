@@ -63,6 +63,10 @@ const characters = [
   {
     name: "¿?",
     dialogue: "Sin dolor, no hay glória."
+  },
+  {
+    name: "...",
+    dialogue: "..."
   }
 ];
 

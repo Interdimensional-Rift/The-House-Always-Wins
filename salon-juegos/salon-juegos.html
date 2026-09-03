@@ -58,7 +58,7 @@
             <span>Slots 777</span>
           </button>
 
-          <button class="game-card" type="button">
+          <button id="open-blackjack" class="game-card" type="button">
             <div class="game-image">A♠</div>
             <span>Black Jack</span>
           </button>
@@ -175,6 +175,55 @@
           <button id="close-dice" class="games-back" type="button">Volver</button>
         </div>
 
+        <!-- INICIO BLACKJACK -->
+        <div id="blackjack-game" class="blackjack-game" style="display: none;">
+          <div class="game-header">
+            <div class="blackjack-header">
+              <h2>Black Jack</h2>
+            </div>
+            <button id="blackjack-help-button" class="help-button" type="button">?</button>
+          </div>
+
+          <div id="blackjack-help" class="rules-panel" style="display: none;">
+            <p>Gana al crupier acercándote a 21 sin pasarte.</p>
+            <p>Las figuras (J, Q, K) valen 10. El As vale 1 u 11.</p>
+            <p>El crupier se planta siempre al llegar a 17.</p>
+            <p>El pago es 1:1, pero un Blackjack natural paga 3:2.</p>
+          </div>
+
+          <div class="blackjack-bet-box">
+            <label>
+              Apuesta
+              <input id="blackjack-bet" type="number" min="1" value="20">
+            </label>
+            <button id="btn-repartir" type="button">Apostar y Repartir</button>
+          </div>
+
+          <div id="mesa-blackjack" class="mesa-blackjack">
+            <!-- AÑADE ESTA LÍNEA AQUÍ (El mazo de cartas) -->
+            <div id="deck-bj" class="deck-bj"></div> 
+            
+            <div class="area-juego">
+              <p>Crupier: <strong id="puntos-crupier">0</strong></p>
+              <div id="cartas-crupier" class="mano"></div>
+            </div>
+            <div class="area-juego">
+              <p>Jugador: <strong id="puntos-jugador">0</strong></p>
+              <div id="cartas-jugador" class="mano"></div>
+            </div>
+          </div>
+
+          <p id="blackjack-message" class="blackjack-message"></p>
+
+          <div class="blackjack-controls">
+            <button id="btn-pedir" type="button" disabled>Pedir Carta</button>
+            <button id="btn-plantarse" type="button" disabled>Plantarse</button>
+          </div>
+
+          <button id="close-blackjack" class="games-back" type="button">Volver</button>
+        </div>
+        <!-- FIN BLACKJACK -->
+
         <button id="close-games" class="games-back" type="button">Volver</button>
       </div>
     </section>
@@ -185,5 +234,6 @@
   <script src="fichas.js" defer></script>
   <script src="slots.js" defer></script>
   <script src="dados.js" defer></script>
+  <script src="black-jack.js" defer></script>
 </body>
 </html>
