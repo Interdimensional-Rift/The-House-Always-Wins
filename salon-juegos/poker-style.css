@@ -1,0 +1,604 @@
+/* ==========================================================================
+   PÓKER — estilos mejorados
+   Compatible con el HTML y JS del juego.
+   ========================================================================== */
+
+.poker-game {
+    display: none;
+    width: min(720px, calc(100% - 24px));
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+
+    border: 2px solid var(--primary-orange);
+    border-radius: var(--border-radius-md);
+
+    background:
+        radial-gradient(circle at top, rgba(255, 159, 28, 0.06), transparent 42%),
+        linear-gradient(145deg, rgba(55, 8, 8, 0.97), rgba(8, 8, 8, 0.97));
+
+    color: var(--primary-gold);
+    text-align: center;
+
+    box-shadow:
+        0 0 30px rgba(0, 0, 0, 0.75),
+        inset 0 0 30px rgba(255, 159, 28, 0.025);
+
+    isolation: isolate;
+}
+
+.poker-game.visible {
+    display: block;
+    animation: gameFadeIn 0.55s ease forwards;
+}
+
+.poker-header {
+    margin-bottom: 4px;
+}
+
+.poker-header h2 {
+    margin: 0 0 6px;
+    color: var(--light-gold);
+    font-size: clamp(1.65rem, 4vw, 2rem);
+    font-weight: 900;
+    line-height: 1.1;
+    text-shadow: 0 0 14px rgba(255, 159, 28, 0.9);
+}
+
+.poker-header p {
+    max-width: 620px;
+    margin: 0 auto 16px;
+    line-height: 1.45;
+}
+
+/* --------------------------------------------------------------------------
+   Tabla de premios
+   -------------------------------------------------------------------------- */
+
+.poker-paytable {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    width: min(560px, 100%);
+    margin: 18px auto;
+}
+
+.poker-paytable div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    padding: 8px 10px;
+
+    border: 1px solid rgba(255, 159, 28, 0.35);
+    border-radius: var(--border-radius-md);
+
+    background: rgba(0, 0, 0, 0.45);
+    text-align: left;
+
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.poker-paytable div:hover {
+    border-color: rgba(255, 159, 28, 0.62);
+    background: rgba(255, 159, 28, 0.07);
+}
+
+.poker-paytable div:first-child {
+    border-color: var(--primary-orange);
+    background: rgba(255, 159, 28, 0.1);
+}
+
+.poker-paytable strong {
+    color: var(--light-gold);
+    white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Apuesta
+   -------------------------------------------------------------------------- */
+
+.poker-bet-box {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 12px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+}
+
+.poker-bet-box label {
+    display: grid;
+    gap: 6px;
+    font-weight: 700;
+}
+
+.poker-bet-box input {
+    width: 90px;
+    box-sizing: border-box;
+    padding: 9px 10px;
+
+    border: 1px solid var(--primary-orange);
+    border-radius: var(--border-radius-md);
+
+    background: rgba(0, 0, 0, 0.8);
+    color: var(--light-gold);
+
+    font: inherit;
+    font-weight: 700;
+    text-align: center;
+
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.poker-bet-box input:hover {
+    background: rgba(0, 0, 0, 0.9);
+}
+
+.poker-bet-box input:focus-visible {
+    border-color: var(--light-gold);
+    box-shadow: 0 0 0 3px rgba(255, 159, 28, 0.22);
+}
+
+.poker-bet-box input:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.poker-bet-box button,
+.poker-controls button {
+    min-height: 42px;
+    padding: 10px 18px;
+}
+
+/* --------------------------------------------------------------------------
+   Mesa
+   -------------------------------------------------------------------------- */
+
+.poker-table {
+    position: relative;
+    min-height: 210px;
+    margin: 20px 0 10px;
+    padding: 30px 15px 20px;
+    box-sizing: border-box;
+
+    border: 2px solid rgba(255, 159, 28, 0.4);
+    border-radius: 14px;
+
+    background:
+        radial-gradient(circle at center, #2a4d34 0%, #1a3322 100%);
+
+    box-shadow:
+        inset 0 0 18px rgba(0, 0, 0, 0.8),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.035);
+
+    overflow: hidden;
+}
+
+/* Decoración de las esquinas de la mesa. */
+.poker-table::before,
+.poker-table::after {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    border: 1px solid rgba(255, 255, 255, 0.035);
+    border-radius: 50%;
+    pointer-events: none;
+    content: "";
+}
+
+.poker-table::before {
+    top: -55px;
+    left: -55px;
+}
+
+.poker-table::after {
+    right: -55px;
+    bottom: -55px;
+}
+
+/* --------------------------------------------------------------------------
+   Mazo
+   -------------------------------------------------------------------------- */
+
+.poker-deck {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    z-index: 3;
+
+    width: 46px;
+    height: 64px;
+
+    pointer-events: none;
+}
+
+.poker-deck-card {
+    position: absolute;
+    inset: 0;
+
+    display: grid;
+    place-items: center;
+
+    width: 46px;
+    height: 64px;
+    box-sizing: border-box;
+
+    border: 2px solid #fff;
+    border-radius: 5px;
+
+    background: #fff;
+    color: #111;
+
+    font-size: 1.5rem;
+    line-height: 1;
+
+    box-shadow:
+        -2px 2px 0 rgba(255, 255, 255, 0.8),
+        -4px 4px 5px rgba(0, 0, 0, 0.5);
+}
+
+.poker-deck-card-back {
+    transform: translate(-4px, 4px);
+    background:
+        repeating-linear-gradient(
+            45deg,
+            #2980b9 0 7px,
+            #3498db 7px 14px
+        );
+    z-index: 2;
+}
+
+/* --------------------------------------------------------------------------
+   Mano
+   -------------------------------------------------------------------------- */
+
+.poker-hand-label {
+    margin: 0 0 12px;
+    color: var(--light-gold);
+    font-weight: 700;
+}
+
+.poker-hand {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(6px, 1.5vw, 10px);
+
+    min-height: 120px;
+    padding: 8px 0;
+
+    flex-wrap: wrap;
+}
+
+/*
+ * Las cartas son BUTTON en el JS.
+ * Resetear aquí su estilo nativo evita bordes/fondos diferentes
+ * según Chrome, Firefox, Safari o móvil.
+ */
+.poker-card {
+    position: relative;
+
+    width: 76px;
+    height: 108px;
+    flex: 0 0 auto;
+
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    border-radius: 7px;
+    background: transparent;
+    color: inherit;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    perspective: 700px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+
+    animation: pokerCardIn 0.35s ease-out both;
+}
+
+.poker-card-inner {
+    position: relative;
+
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    transform-style: preserve-3d;
+    transition:
+        transform 0.25s ease,
+        filter 0.2s ease;
+}
+
+.poker-card.selected .poker-card-inner {
+    transform: translateY(-12px) rotateZ(-1deg);
+}
+
+.poker-card-face {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    padding: 7px;
+    box-sizing: border-box;
+
+    border: 2px solid #ddd;
+    border-radius: 7px;
+
+    background: linear-gradient(145deg, #ffffff, #f2f2f2);
+    color: #111;
+
+    box-shadow:
+        2px 4px 8px rgba(0, 0, 0, 0.45);
+
+    backface-visibility: hidden;
+}
+
+.poker-card-rank {
+    display: block;
+    font-size: 1.35rem;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.poker-card-suit {
+    display: block;
+    margin-top: 2px;
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.poker-card.red {
+    color: #d71920;
+}
+
+.poker-card:hover:not(:disabled) .poker-card-face {
+    box-shadow:
+        0 0 0 2px rgba(255, 159, 28, 0.25),
+        2px 6px 12px rgba(0, 0, 0, 0.55);
+}
+
+.poker-card:hover:not(:disabled) .poker-card-inner {
+    filter: brightness(1.025);
+}
+
+.poker-card:active:not(:disabled) .poker-card-inner {
+    transform: translateY(-7px) scale(0.985);
+}
+
+.poker-card.selected .poker-card-face {
+    border-color: var(--primary-orange);
+    box-shadow:
+        0 0 0 4px rgba(255, 159, 28, 0.35),
+        0 0 18px rgba(255, 159, 28, 0.75);
+}
+
+.poker-card:focus {
+    outline: none;
+}
+
+.poker-card:focus-visible .poker-card-face {
+    outline: 3px solid var(--light-gold);
+    outline-offset: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   Mensajes y controles
+   -------------------------------------------------------------------------- */
+
+.poker-message {
+    min-height: 30px;
+    margin: 10px 0;
+
+    color: var(--light-gold);
+    font-weight: 700;
+    line-height: 1.4;
+
+    text-shadow: 0 0 10px var(--border-glow);
+}
+
+.poker-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+
+    margin: 12px 0 18px;
+
+    flex-wrap: wrap;
+}
+
+.poker-controls button,
+.poker-bet-box button {
+    cursor: pointer;
+    transition:
+        transform 0.16s ease,
+        filter 0.16s ease,
+        box-shadow 0.16s ease;
+}
+
+.poker-controls button:hover:not(:disabled),
+.poker-bet-box button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.04);
+}
+
+.poker-controls button:active:not(:disabled),
+.poker-bet-box button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.poker-controls button:focus-visible,
+.poker-bet-box button:focus-visible {
+    outline: 3px solid var(--light-gold);
+    outline-offset: 3px;
+}
+
+.poker-controls button:disabled,
+.poker-bet-box button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    filter: none;
+    transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   Victoria
+   -------------------------------------------------------------------------- */
+
+.poker-game.poker-win .poker-table {
+    animation: pokerWin 0.8s ease-in-out;
+}
+
+/* --------------------------------------------------------------------------
+   Animaciones
+   -------------------------------------------------------------------------- */
+
+@keyframes pokerCardIn {
+    from {
+        opacity: 0;
+        transform: translateY(-25px) scale(0.85) rotate(-4deg);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0);
+    }
+}
+
+@keyframes pokerWin {
+    0%,
+    100% {
+        box-shadow:
+            inset 0 0 18px rgba(0, 0, 0, 0.8);
+    }
+
+    50% {
+        box-shadow:
+            inset 0 0 18px rgba(0, 0, 0, 0.8),
+            0 0 28px rgba(255, 159, 28, 0.8);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Móvil
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 600px) {
+    .poker-game {
+        width: min(100%, calc(100% - 16px));
+        padding: 14px;
+    }
+
+    .poker-paytable {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .poker-bet-box {
+        gap: 10px;
+    }
+
+    .poker-table {
+        min-height: 195px;
+        padding-inline: 8px;
+    }
+
+    .poker-deck {
+        top: 10px;
+        right: 10px;
+        transform: scale(0.88);
+        transform-origin: top right;
+    }
+
+    .poker-hand {
+        gap: 6px;
+        min-height: 105px;
+    }
+
+    .poker-card {
+        width: 64px;
+        height: 92px;
+    }
+
+    .poker-card-face {
+        padding: 6px;
+    }
+
+    .poker-card-rank {
+        font-size: 1.1rem;
+    }
+
+    .poker-card-suit {
+        font-size: 1rem;
+    }
+
+    .poker-card.selected .poker-card-inner {
+        transform: translateY(-8px) rotateZ(-1deg);
+    }
+}
+
+/* Móviles especialmente estrechos. */
+@media (max-width: 380px) {
+    .poker-game {
+        width: calc(100% - 8px);
+        padding: 11px;
+    }
+
+    .poker-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .poker-hand {
+        gap: 4px;
+    }
+
+    .poker-card {
+        width: 57px;
+        height: 82px;
+    }
+
+    .poker-card-face {
+        padding: 5px;
+    }
+
+    .poker-card-rank {
+        font-size: 1rem;
+    }
+
+    .poker-card-suit {
+        font-size: 0.9rem;
+    }
+}
+
+/* Usuarios que prefieren menos movimiento. */
+@media (prefers-reduced-motion: reduce) {
+    .poker-game.visible,
+    .poker-card,
+    .poker-game.poker-win .poker-table {
+        animation: none;
+    }
+
+    .poker-card-inner,
+    .poker-paytable div,
+    .poker-controls button,
+    .poker-bet-box button,
+    .poker-bet-box input {
+        transition: none;
+    }
+}

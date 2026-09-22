@@ -63,7 +63,7 @@
             <span>Black Jack</span>
           </button>
 
-          <button class="game-card" type="button">
+          <button id="open-poker" class="game-card" type="button">
             <div class="game-image">K♦</div>
             <span>Poker</span>
           </button>
@@ -187,7 +187,6 @@
           <div id="blackjack-help" class="rules-panel" style="display: none;">
             <p>Gana al crupier acercándote a 21 sin pasarte.</p>
             <p>Las figuras (J, Q, K) valen 10. El As vale 1 u 11.</p>
-            <p>El crupier se planta siempre al llegar a 17.</p>
             <p>El pago es 1:1, pero un Blackjack natural paga 3:2.</p>
           </div>
 
@@ -224,6 +223,67 @@
         </div>
         <!-- FIN BLACKJACK -->
 
+
+        <!-- INICIO POKER -->
+        <div id="poker-game" class="poker-game">
+          <div class="game-header">
+            <div class="poker-header">
+              <h2>Póker</h2>
+              <p>Descarta cartas y forma la mejor mano posible.</p>
+            </div>
+            <button id="poker-help-button" class="help-button" type="button">?</button>
+          </div>
+
+          <div id="poker-help" class="rules-panel">
+            <p><strong>Póker en solitario</strong></p>
+            <p>Haz una apuesta y recibe 5 cartas.</p>
+            <p>Selecciona las cartas que quieras cambiar.</p>
+            <p>Pulsa «Cambiar cartas» para hacer tu único descarte.</p>
+            <p>El premio depende de la combinación final.</p>
+          </div>
+
+          <div class="poker-paytable">
+            <div><span>Mano</span><strong>Pago</strong></div>
+            <div><span>Pareja</span><strong>x1</strong></div>
+            <div><span>Doble pareja</span><strong>x2</strong></div>
+            <div><span>Trío</span><strong>x3</strong></div>
+            <div><span>Escalera</span><strong>x4</strong></div>
+            <div><span>Color</span><strong>x6</strong></div>
+            <div><span>Full</span><strong>x9</strong></div>
+            <div><span>Póker</span><strong>x25</strong></div>
+            <div><span>Escalera de color</span><strong>x50</strong></div>
+            <div><span>Escalera real</span><strong>x250</strong></div>
+          </div>
+
+          <div class="poker-bet-box">
+            <label>
+              Apuesta
+              <input id="poker-bet" type="number" min="1" value="10">
+            </label>
+            <button id="deal-poker" type="button">Apostar y Repartir</button>
+          </div>
+
+          <div class="poker-table">
+            <div class="poker-deck">
+              <div class="poker-deck-card">♠</div>
+              <div class="poker-deck-card poker-deck-card-back"></div>
+            </div>
+
+            <p class="poker-hand-label">Tu mano</p>
+            <div id="poker-hand" class="poker-hand"></div>
+          </div>
+
+          <p id="poker-message" class="poker-message"></p>
+
+          <div class="poker-controls">
+            <button id="draw-poker" type="button" disabled>Cambiar cartas</button>
+            <button id="new-poker" type="button">Nueva partida</button>
+          </div>
+
+          <button id="close-poker" class="games-back" type="button">Volver</button>
+        </div>
+        <!-- FIN POKER -->
+
         <button id="close-games" class="games-back" type="button">Volver</button>
       </div>
     </section>
@@ -235,5 +295,6 @@
   <script src="slots.js" defer></script>
   <script src="dados.js" defer></script>
   <script src="black-jack.js" defer></script>
+  <script src="poker.js" defer></script>
 </body>
 </html>
